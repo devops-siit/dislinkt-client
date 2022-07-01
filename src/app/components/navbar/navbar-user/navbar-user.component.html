@@ -1,0 +1,15 @@
+<mat-toolbar class="flexSpaceBetween">
+	<div>
+		<a  id="home" [routerLink]="['/']">
+			<mat-icon class="material-icons"  inline="true" >home</mat-icon>
+		</a>
+	</div>
+	<span>
+		<button id="login" mat-button [routerLink]="['/profiles']" > Profiles </button>
+        <button id="login" mat-button [routerLink]="['/posts']" > My Posts </button>
+        <button id="login" mat-button [routerLink]="['/messages']" > My Messages </button>
+		<button id="login" mat-button [routerLink]="['/job-offers']" > Job offers </button>
+		<button id="login" mat-button [routerLink]="['/my-profile']" > My profile </button>
+		<button id="register" mat-button (click)="signOut()" > Sign out </button>
+	</span>
+</mat-toolbar>

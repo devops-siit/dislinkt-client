@@ -1,0 +1,30 @@
+<div>
+    <div class="container1">
+    <div class="col">
+      <!-- <app-pagination [totalItems]="totalSize" [pageSize]="pageSize"
+        (pageSelected)="changePage($event)">
+      </app-pagination> -->
+    </div>
+    </div> 
+    <div *ngFor="let p of profiles">
+        <br><br>
+        <table  class="styled-table">
+            <thead>
+                <tr>
+                    <th><button mat-button (click)="open_profile(p.id)" >{{p?.username}}</button></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>First Name: </td>
+                    <td>{{p?.firstName}}</td>
+                </tr>
+                <tr>
+                    <td>Last Name: </td>
+                    <td>{{p?.lastName}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

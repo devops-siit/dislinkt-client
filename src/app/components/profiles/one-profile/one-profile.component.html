@@ -1,0 +1,28 @@
+
+<div>
+    <br><br>
+    <table class="styled-table">
+        <tbody>
+            <tr>
+                <td>{{user.username}}</td>
+                <td><button mat-raised-button color="primary" (click)="follow()" >Follow</button></td>
+                <td><button mat-raised-button (click)="message()" >Message</button></td>
+            </tr>
+        </tbody>
+
+    </table>
+    <br><br>
+    <ul>
+        <li *ngFor="let p of posts">
+          <header>
+            <h1>{{user?.username}}</h1>
+
+            <img class="image" mat-card-image src="https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg" alt="photo">
+            <div>
+              
+            </div>
+          </header>
+          <p>{{p?.text}}</p>
+        </li>
+      </ul>
+</div>
