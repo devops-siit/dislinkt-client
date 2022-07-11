@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
+import { NewEducationComponent } from '../new-education/new-education.component';
+import { NewWorkExperienceComponent } from '../new-work-experience/new-work-experience.component';
 
 @Component({
   selector: 'app-edit-profile',
@@ -71,8 +73,12 @@ export class EditProfileComponent implements OnInit {
       })
   }
   addEducation():void {
-
+    const dialogRef = this.dialog.open(NewEducationComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
+
   removeWorkExperience(id:any):void{
     const message = `Are you sure you want to remove work experience?`
     const dialogData = new ConfirmDialogModel('Confirm Action', message);
@@ -98,7 +104,10 @@ export class EditProfileComponent implements OnInit {
       })
   }
   addWorkExperience():void {
-    
+    const dialogRef = this.dialog.open(NewWorkExperienceComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
 }
