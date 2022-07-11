@@ -1,0 +1,17 @@
+<form class="reactiveForm" [formGroup]="expForm" (ngSubmit)="addExperience()">
+    <div class="example-container">
+    <h2 mat-dialog-title>New work experience</h2>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Experience</mat-label>
+        <input id="experience" matInput formControlName="experience">
+        <mat-error *ngIf="expForm.controls.experience.touched && expForm.controls.experience.invalid">
+            <span *ngIf="expForm.controls.experience.errors?.required">This field is mandatory.</span>
+        </mat-error>
+    </mat-form-field>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button mat-dialog-close>Cancel</button>
+        <button id="expSubmit" type="submit" mat-raised-button color="success">Save</button>
+    </mat-dialog-actions>
+    </div>
+</form>

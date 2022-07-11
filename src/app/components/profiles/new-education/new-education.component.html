@@ -1,0 +1,17 @@
+<form class="reactiveForm" [formGroup]="eduForm" (ngSubmit)="addEducation()">
+    <div class="example-container">
+    <h2 mat-dialog-title>New education</h2>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Education</mat-label>
+        <input id="education" matInput formControlName="education">
+        <mat-error *ngIf="eduForm.controls.education.touched && eduForm.controls.education.invalid">
+            <span *ngIf="eduForm.controls.education.errors?.required">This field is mandatory.</span>
+        </mat-error>
+    </mat-form-field>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button mat-dialog-close>Cancel</button>
+        <button id="eduSubmit" type="submit" mat-raised-button color="success">Save</button>
+    </mat-dialog-actions>
+    </div>
+</form>
