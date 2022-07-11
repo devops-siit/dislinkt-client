@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 
 @Component({
   selector: 'app-one-profile',
@@ -11,10 +13,14 @@ export class OneProfileComponent implements OnInit {
   id: any = "";
   user: any = {};
   posts: any = [];
+  following = true;
+  privateAccount = true;
+  result: any;
 
   constructor( 
     private route: ActivatedRoute,
     private router: Router,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -28,6 +34,43 @@ export class OneProfileComponent implements OnInit {
   follow(): void {
 
   }
+  unfollow(): void{
+    if (this.privateAccount) {
+      const message = `This account is private. If you change your mind, you'll have to request to follow. Are you sure? `
+      const dialogData = new ConfirmDialogModel('Confirm Action', message);
+      const dialogRef = this.dialog.open(ConfirmationComponent, {
+        maxWidth: '400px',
+        data: dialogData
+    });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+        if (this.result === true){
+          // this.profileService.unfollowkAccount(this.user.id).subscribe(
+          //   result => {
+          //     this.toastr.success('User unfollowed');
+          //     window.location.reload();
+          //   }, error => {
+          //     this.toastr.error('Cannot unfollow user');
+      
+          //   }
+          // );
+
+          }
+      })
+    }
+    else {
+      // unfollow user
+      // this.profileService.unfollowkAccount(this.user.id).subscribe(
+          //   result => {
+          //     this.toastr.success('User unfollowed');
+          //     window.location.reload();
+          //   }, error => {
+          //     this.toastr.error('Cannot unfollow user');
+      
+          //   }
+          // );
+    }
+  }
   message(): void {
     
   }
@@ -38,5 +81,28 @@ export class OneProfileComponent implements OnInit {
   hideComments(post: any): void{
     post.showComments = false
   }
+  block():void{
+    const message = `Are you sure you want to block user?`
+    const dialogData = new ConfirmDialogModel('Confirm Action', message);
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+        maxWidth: '400px',
+        data: dialogData
+    });
 
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+        if (this.result === true){
+          // this.profileService.blockAccount(this.user.id).subscribe(
+          //   result => {
+          //     this.toastr.success('User blocked');
+          //     window.location.reload();
+          //   }, error => {
+          //     this.toastr.error('Cannot block user');
+      
+          //   }
+          // );
+
+          }
+      })
+  }
 }
