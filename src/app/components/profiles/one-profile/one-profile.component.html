@@ -1,4 +1,3 @@
-
 <div>
     <br><br>
     <table class="styled-table">
@@ -16,13 +15,28 @@
         <li *ngFor="let p of posts">
           <header>
             <h1>{{user?.username}}</h1>
-
             <img class="image" mat-card-image src="https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg" alt="photo">
-            <div>
-              
-            </div>
           </header>
           <p>{{p?.text}}</p>
+          <div>
+            <button *ngIf="p?.showComments === false" (click)="showComments(p)" mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+              <mat-icon>expand_more</mat-icon>Show comments
+            </button>
+            <button  *ngIf="p?.showComments === true" (click)="hideComments(p)" mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+              <mat-icon>expand_less</mat-icon>Hide comments
+            </button>
+          </div>
+          <div *ngIf="p?.showComments === true">
+            <ul>
+              <li *ngFor="let com of p.comments">
+                <header>
+                  <h1>{{com?.username}}</h1>
+                  <img style="height: 40px; width: 40px;" class="image" mat-card-image src="https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg" alt="photo">
+                </header>
+                <p>{{com?.text}}</p>
+              </li>
+            </ul>
+          </div>
         </li>
       </ul>
 </div>

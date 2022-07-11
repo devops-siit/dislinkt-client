@@ -15,6 +15,7 @@ import { SharedModule } from './components/shared/shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NavbarAdminComponent } from './components/navbar/navbar-admin/navbar-admin.component';
 import { ProfilesModule } from './components/profiles/profiles-module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ProfilesModule } from './components/profiles/profiles-module';
     AppRoutingModule,
     MaterialModule,
     MatDialogModule,
+    MatIconModule,
     AuthModule,
     ProfilesModule,
     SharedModule,

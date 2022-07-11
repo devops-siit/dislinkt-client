@@ -22,7 +22,7 @@ export class OneProfileComponent implements OnInit {
     this.id = this.route.snapshot.params.id;
     // TO DO dobavi usera, dobavi njegove postove
     this.user = {"id": this.id, "username": "senorita"};
-    this.posts = [{"text": "post1"}, {"text": "post2"}];
+    this.posts = [{"text": "post1", "showComments": false, "comments": [{"username": "Stoja", "text": "VRHH"}]}, {"text": "post2",  "showComments": false, "comments": []}];
   }
 
   follow(): void {
@@ -31,6 +31,12 @@ export class OneProfileComponent implements OnInit {
   message(): void {
     
   }
+  showComments(post: any): void {
+    post.showComments = true
+  }
   
+  hideComments(post: any): void{
+    post.showComments = false
+  }
 
 }
