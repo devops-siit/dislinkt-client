@@ -1,0 +1,186 @@
+<form class="reactiveForm"  [formGroup]="profileForm" (ngSubmit)="saveProfileData()">
+    <div style="margin-left: 50px;" class="example-container">
+    <br>
+    <br>
+    <table class="styled-table">
+        <thead>
+        <tr>         
+            <th>Edit profile</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+            
+        <tr>
+            <th>Name</th>
+            <th>
+                <mat-form-field appearance="fill">
+                    <input matInput formControlName="name" required>
+                    <mat-error *ngIf="profileForm.controls.name.touched && profileForm.controls.name.invalid">
+                        <span *ngIf="profileForm.controls.name.errors?.required">This field is mandatory.</span>
+                    </mat-error>
+                </mat-form-field>
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>Username</th>
+            <th>
+                <mat-form-field appearance="fill">
+                    <input matInput formControlName="username" required>
+                    <mat-error *ngIf="profileForm.controls.username.touched && profileForm.controls.username.invalid">
+                        <span *ngIf="profileForm.controls.username.errors?.required">This field is mandatory.</span>
+                    </mat-error>
+                </mat-form-field>
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <th>
+                <mat-form-field appearance="fill">
+                    <input matInput formControlName="email" required>
+                    <mat-error *ngIf="profileForm.controls.email.touched && profileForm.controls.email.invalid">
+                        <span *ngIf="profileForm.controls.email.errors?.required">This field is mandatory.</span>
+                    </mat-error>
+                </mat-form-field>
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>Phone number</th>
+            <th>
+                <mat-form-field appearance="fill">
+                    <input matInput formControlName="phone" required>
+                    <mat-error *ngIf="profileForm.controls.phone.touched && profileForm.controls.phone.invalid">
+                        <span *ngIf="profileForm.controls.phone.errors?.required">This field is mandatory.</span>
+                    </mat-error>
+                </mat-form-field>
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>Date of birth</th>
+            <th>
+                <mat-form-field appearance="fill">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="birthDate" [max]="todayDate" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker" id="datePickerToggleBtn" ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="profileForm.controls.birthDate.touched && profileForm.controls.birthDate.invalid">
+                        <span *ngIf="profileForm.controls.birthDate.errors?.required">This field is mandatory.</span>
+                    </mat-error>
+                  </mat-form-field>
+            </th>
+            <th></th>
+        </tr>
+
+        <tr>
+            <th>Biography</th>
+            <th>
+                <mat-form-field appearance="fill">
+                    <textarea matInput formControlName="bio" id="bio" required></textarea>
+                    <mat-error *ngIf="profileForm.controls.bio.touched && profileForm.controls.bio.invalid">
+                        <span *ngIf="profileForm.controls.bio.errors?.required">This field is mandatory.</span>
+                    </mat-error>
+                </mat-form-field>
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>Gender</th>
+            <th>
+                <mat-radio-group  formControlName="gender">
+                    <mat-radio-button style="margin-left: 10px;" value="MALE">Male</mat-radio-button>
+                    <mat-radio-button style="margin-left: 10px;" value="FEMALE">Female</mat-radio-button>
+                </mat-radio-group>
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>Public profile</th>
+            <th>
+                <mat-checkbox formControlName="public" value="true">Public</mat-checkbox>
+            </th>
+            <th></th>
+        </tr>
+       
+        <tr>
+            <td></td>
+            <td>
+                <mat-dialog-actions >
+                    <button id="ticketSubmit" style="width: 250px; height: 50px; display: block; margin-left: auto; margin-right: auto; "  type="submit" mat-raised-button color="success" >Save changes</button>
+                </mat-dialog-actions>
+            </td>
+            <td></td>
+        </tr>
+    </tbody>
+    </table>
+    <br><br>
+    </div>
+</form>
+<div style="margin-left: 50px;" class="example-container">
+    <br>
+    <br>
+    <table class="styled-table">
+        <thead>
+        <tr>         
+            <th>Educations</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let edu of educations">
+            <td>{{edu.education}}</td>
+            <td></td>
+            <td >
+                <button mat-raised-button (click)="removeEducation(edu.id)" >
+                    <mat-icon aria-hidden="false" aria-label="Example home icon">clear</mat-icon>
+                </button>
+            </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button (click)="addEducation()" style="width: 250px; height: 50px; display: block; margin-left: auto; margin-right: auto; "  mat-raised-button color="success" >Add new education</button>
+                </td>
+                <td></td>
+            </tr>
+    </tbody>
+    </table>
+</div>
+<br><br>
+<div style="margin-left: 50px;" class="example-container">
+    <br>
+    <br>
+    <table class="styled-table">
+        <thead>
+        <tr>         
+            <th>Experiences</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let exp of experiences">
+            <td>{{exp.experience}}</td>
+            <td></td>
+            <td >
+                <button mat-raised-button (click)="removeWorkExperience(exp.id)" >
+                    <mat-icon aria-hidden="false" aria-label="Example home icon">clear</mat-icon>
+                </button>
+            </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button (click)="addWorkExperience()" style="width: 250px; height: 50px; display: block; margin-left: auto; margin-right: auto; "  mat-raised-button color="success" >Add new experience</button>
+                </td>
+                <td></td>
+            </tr>
+    </tbody>
+    </table>
+</div>
+<br><br>
