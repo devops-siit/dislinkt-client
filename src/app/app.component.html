@@ -2,7 +2,8 @@
   <div class="row">
     <div class="col">
       <!-- postaviti navigacione barove -->
-      <app-navbar-non-auth *ngIf="role === undefined "></app-navbar-non-auth>
+      <!-- <app-navbar-non-auth *ngIf="role === undefined "></app-navbar-non-auth> -->
+      <app-navbar-user ></app-navbar-user>
       <app-navbar-user *ngIf="role === 'ROLE_USER'"></app-navbar-user>
       <app-navbar-user *ngIf="role === 'ROLE_ADMIN'"></app-navbar-user>
     </div>
