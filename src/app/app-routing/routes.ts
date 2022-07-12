@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { LoginPageComponent } from '../components/auth/login-page/login-page.component';
 import { RegistrationComponent } from '../components/auth/registration/registration.component';
+import { AllChatsComponent } from '../components/messages/all-chats/all-chats.component';
+import { ChatMessagesComponent } from '../components/messages/chat-messages/chat-messages.component';
 import { AllProfilesComponent } from '../components/profiles/all-profiles/all-profiles.component';
 import { EditProfileComponent } from '../components/profiles/edit-profile/edit-profile.component';
 import { OneProfileComponent } from '../components/profiles/one-profile/one-profile.component';
@@ -30,6 +32,14 @@ export const routes: Routes = [
    {
       path: 'edit-profile',
       component: EditProfileComponent,
+   },
+   {
+      path: 'chat-messages/:id',
+      component: ChatMessagesComponent,
+   },
+   {
+      path: 'all-chats',
+      component: AllChatsComponent,
    },
  
     // {

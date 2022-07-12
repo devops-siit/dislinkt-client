@@ -1,0 +1,32 @@
+
+<div class="chat_window">
+    <div class="top_menu">
+        
+        <div class="title">Chat with {{withUser}}</div>
+    </div>
+    
+    <ul class="messages">    
+        <li *ngFor="let m of messages" [ngClass]="(withUser === m.sender)?'message left appeared':'message right appeared'">
+                    <div class="avatar">
+                                
+                    </div>
+                    <div class="text_wrapper">
+                        <div class="text">{{m.text}}</div>
+                    </div>
+            </li></ul>
+
+    <div class="bottom_wrapper clearfix">
+        <form class="reactiveForm"  [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+            <div class="message_input_wrapper">
+                <input class="message_input" placeholder="Type your message here..."   formControlName="message" >
+            </div>
+            <mat-dialog-actions >
+                <button  class="send_message" type="submit" mat-raised-button color="success" >Send</button>
+            </mat-dialog-actions>
+        </form>
+        <!-- <div class="message_input_wrapper">
+            <input class="message_input" placeholder="Type your message here..." />
+        </div> -->
+        
+    </div>
+</div>
