@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NewCommentComponent } from '../../comments/new-comment/new-comment.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 
 @Component({
@@ -32,6 +35,7 @@ export class OneProfileComponent implements OnInit {
     this.id = this.route.snapshot.params.id;
     // TO DO dobavi usera, dobavi njegove postove
     this.user = {"id": this.id, "username": "senorita"};
+
     this.posts = [{"id":1,"text": "post1", "showComments": false, "likes":35, "dislikes":5, "comments": [{"username": "Stoja", "text": "VRHH"}]}, {"id":2,"text": "post2",  "showComments": false, "comments": []}];
   }
 
@@ -47,6 +51,7 @@ export class OneProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+
   }
 
   follow(): void {
@@ -91,6 +96,9 @@ export class OneProfileComponent implements OnInit {
   }
   message(): void {
     this.router.navigate(['/chat-messages/' + this.id]);
+  }
+  showComments(post: any): void {
+    post.showComments = true
   }
   showComments(post: any): void {
     post.showComments = true

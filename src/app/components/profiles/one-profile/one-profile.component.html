@@ -3,6 +3,7 @@
     <table class="styled-table">
         <tbody>
             <tr>
+
               <td  *ngIf="privateAccount" ><mat-icon>lock</mat-icon></td>
               <td  *ngIf="!privateAccount"> <mat-icon>public</mat-icon></td>
               <td>
@@ -14,6 +15,7 @@
               <td *ngIf="!following && privateAccount"><button mat-raised-button color="primary"  (click)="unfollow()" >Send request</button></td>
               <td><button mat-raised-button (click)="message()" >Message</button></td>
               <td><button mat-raised-button color="warn" (click)="block()" >Block</button></td>
+
             </tr>
         </tbody>
 
@@ -23,6 +25,7 @@
         <li *ngFor="let p of posts">
           <header>
             <h1>{{user?.username}}</h1>
+
             <button (click)="like(p.id)" mat-icon-button color="primary" aria-label="Example icon button with a home icon">
               <mat-icon>thumb_up_alt</mat-icon>{{p.likes}}
             </button>
@@ -32,6 +35,7 @@
             <button style="margin-left: 50px;" (click)="sendComment(p.id)" mat-icon-button aria-label="Example icon button with a home icon">
               <mat-icon>insert_comment</mat-icon>Leave a comment
             </button>
+
             <img class="image" mat-card-image src="https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg" alt="photo">
           </header>
           <p>{{p?.text}}</p>
