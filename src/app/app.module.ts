@@ -18,6 +18,7 @@ import { ProfilesModule } from './components/profiles/profiles-module';
 import { MatIconModule } from '@angular/material/icon';
 import { MessagesModule } from './components/messages/messages-module';
 
+
 @NgModule({
   declarations: [
     AppComponent,
