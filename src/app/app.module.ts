@@ -17,6 +17,7 @@ import { NavbarAdminComponent } from './components/navbar/navbar-admin/navbar-ad
 import { ProfilesModule } from './components/profiles/profiles-module';
 import { MatIconModule } from '@angular/material/icon';
 import { MessagesModule } from './components/messages/messages-module';
+import { CommentsModule } from './components/comments/comments-module';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { MessagesModule } from './components/messages/messages-module';
     AuthModule,
     ProfilesModule,
     MessagesModule,
+    CommentsModule,
     SharedModule,
     BrowserModule,
     ToastrModule.forRoot(),

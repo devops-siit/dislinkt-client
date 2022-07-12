@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NewCommentComponent } from '../../comments/new-comment/new-comment.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 
 @Component({
@@ -10,6 +15,7 @@ import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirma
 })
 export class OneProfileComponent implements OnInit {
 
+  commentForm!: FormGroup;
   id: any = "";
   user: any = {};
   posts: any = [];
@@ -19,16 +25,33 @@ export class OneProfileComponent implements OnInit {
 
   constructor( 
     private route: ActivatedRoute,
+    private fb: FormBuilder,
     private router: Router,
     public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
-
+    this.createForm();
     this.id = this.route.snapshot.params.id;
     // TO DO dobavi usera, dobavi njegove postove
     this.user = {"id": this.id, "username": "senorita"};
-    this.posts = [{"text": "post1", "showComments": false, "comments": [{"username": "Stoja", "text": "VRHH"}]}, {"text": "post2",  "showComments": false, "comments": []}];
+
+    this.posts = [{"id":1,"text": "post1", "showComments": false, "likes":35, "dislikes":5, "comments": [{"username": "Stoja", "text": "VRHH"}]}, {"id":2,"text": "post2",  "showComments": false, "comments": []}];
+  }
+
+  createForm(): void {
+    this.commentForm = this.fb.group({
+      commentText: ['']
+    });
+  }
+
+  sendComment(id: any): void {
+    const dialogRef = this.dialog.open(NewCommentComponent);
+    dialogRef.componentInstance.postId = id;
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+
   }
 
   follow(): void {
@@ -72,7 +95,10 @@ export class OneProfileComponent implements OnInit {
     }
   }
   message(): void {
-    
+    this.router.navigate(['/chat-messages/' + this.id]);
+  }
+  showComments(post: any): void {
+    post.showComments = true
   }
   showComments(post: any): void {
     post.showComments = true
@@ -104,5 +130,11 @@ export class OneProfileComponent implements OnInit {
 
           }
       })
+  }
+  like(id: any): void{
+
+  }
+  dislike(id: any): void {
+
   }
 }
