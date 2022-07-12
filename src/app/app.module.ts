@@ -16,6 +16,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { NavbarAdminComponent } from './components/navbar/navbar-admin/navbar-admin.component';
 import { ProfilesModule } from './components/profiles/profiles-module';
 import { MatIconModule } from '@angular/material/icon';
+import { MessagesModule } from './components/messages/messages-module';
+
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
     AuthModule,
     ProfilesModule,
+    MessagesModule,
     SharedModule,
     BrowserModule,
     ToastrModule.forRoot(),
