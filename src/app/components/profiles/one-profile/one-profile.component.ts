@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NewCommentComponent } from '../../comments/new-comment/new-comment.component';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
 
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 
@@ -97,9 +95,7 @@ export class OneProfileComponent implements OnInit {
   message(): void {
     this.router.navigate(['/chat-messages/' + this.id]);
   }
-  showComments(post: any): void {
-    post.showComments = true
-  }
+
   showComments(post: any): void {
     post.showComments = true
   }

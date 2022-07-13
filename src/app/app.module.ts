@@ -18,6 +18,7 @@ import { ProfilesModule } from './components/profiles/profiles-module';
 import { MatIconModule } from '@angular/material/icon';
 import { MessagesModule } from './components/messages/messages-module';
 import { CommentsModule } from './components/comments/comments-module';
+import { BlockedAccountsComponent } from './components/profiles/blocked-accounts/blocked-accounts.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { CommentsModule } from './components/comments/comments-module';
     AppComponent,
     NavbarNonAuthComponent,
     NavbarUserComponent,
-    NavbarAdminComponent
+    NavbarAdminComponent,
+    BlockedAccountsComponent
   ],
   imports: [
     AppRoutingModule,

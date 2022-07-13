@@ -1,3 +1,4 @@
+import { BlockedAccountsComponent } from './../components/profiles/blocked-accounts/blocked-accounts.component';
 import { Routes } from '@angular/router';
 import { LoginPageComponent } from '../components/auth/login-page/login-page.component';
 import { RegistrationComponent } from '../components/auth/registration/registration.component';
@@ -40,6 +41,11 @@ export const routes: Routes = [
    {
       path: 'all-chats',
       component: AllChatsComponent,
+   },
+
+   {
+      path: 'blocked-accounts',
+      component: BlockedAccountsComponent,
    },
  
     // {
