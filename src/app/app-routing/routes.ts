@@ -3,6 +3,7 @@ import { LoginPageComponent } from '../components/auth/login-page/login-page.com
 import { RegistrationComponent } from '../components/auth/registration/registration.component';
 import { AllChatsComponent } from '../components/messages/all-chats/all-chats.component';
 import { ChatMessagesComponent } from '../components/messages/chat-messages/chat-messages.component';
+import { AllOffersComponent } from '../components/offers/all-offers/all-offers.component';
 import { AllProfilesComponent } from '../components/profiles/all-profiles/all-profiles.component';
 import { EditProfileComponent } from '../components/profiles/edit-profile/edit-profile.component';
 import { OneProfileComponent } from '../components/profiles/one-profile/one-profile.component';
@@ -41,6 +42,11 @@ export const routes: Routes = [
       path: 'all-chats',
       component: AllChatsComponent,
    },
+   {
+      path: 'job-offers',
+      component: AllOffersComponent,
+   },
+   
  
     // {
     // putanja kojoj moze da pristupi samo registrivani korisnik sa konkretnom ulogom
