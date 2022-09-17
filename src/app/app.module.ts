@@ -25,7 +25,7 @@ import { OffersModule } from './components/offers/offers.module';
 
 
 @NgModule({
-  declarations: [
+  declarations: [ 
     AppComponent,
     NavbarNonAuthComponent,
     NavbarUserComponent,

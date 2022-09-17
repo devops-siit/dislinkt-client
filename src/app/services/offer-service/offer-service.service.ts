@@ -20,4 +20,10 @@ export class OfferService {
     return this.http.get<Page<Offer>>(this.path , { observe : 'response'});
   }
 
+  createOffer(offer:Offer): Observable<HttpResponse<Offer>>{
+
+    return this.http.post<Offer>(this.path, offer, {observe: 'response'})
+  }
+
+
 }
