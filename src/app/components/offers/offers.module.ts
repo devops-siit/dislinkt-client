@@ -9,13 +9,15 @@ import { BrowserModule } from '@angular/platform-browser';
   
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
+import { CreateOfferComponent } from './create-offer/create-offer.component';
 
 
 
  
 @NgModule({
   declarations: [
-    AllOffersComponent
+    AllOffersComponent,
+    CreateOfferComponent
   ],
   imports: [
     CommonModule,  MatDialogModule, MaterialModule, MatCardModule, BrowserModule,
