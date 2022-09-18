@@ -4,13 +4,20 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:8080',
-  login: 'auth/log-in',
-  signUp: 'auth/sign-up',
+  authUrl: 'http://localhost:8181',
+  login: 'login',
+  signUp: 'register',
   signOut: 'auth/sign-out',
   changePassword: 'auth/change-password',
 
-  user: 'api/user'
+  accountUrl: 'http://localhost:8087/accounts',
+  followRequest: 'http://localhost:8087/follow-requests',
+  follows: 'http://localhost:8087/follows',
+  chat: 'http://localhost:8087/chats',
+  message: 'http://localhost:8087/messages',
+  post: 'http://localhost:8087/posts',
+  user: 'api/user',
+  comment: 'http://localhost:8087/comments'
 };
 
 /*
