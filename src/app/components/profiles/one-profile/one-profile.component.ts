@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NewCommentComponent } from '../../comments/new-comment/new-comment.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 
@@ -98,7 +99,6 @@ export class OneProfileComponent implements OnInit {
   showComments(post: any): void {
     post.showComments = true
   }
-
   
   hideComments(post: any): void{
     post.showComments = false
