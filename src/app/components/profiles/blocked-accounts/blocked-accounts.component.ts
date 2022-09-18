@@ -13,10 +13,10 @@ import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirma
 export class BlockedAccountsComponent implements OnInit {
 
 
-  profiles = [{"id": 9, "firstName": "Marija", "lastName": "Petrovic", "username": "mara", "private": false}, 
-  {"id":8, "firstName": "Marija", "lastName": "Petrovic", "username": "mara2", "private": false}, 
-  {"id": 7, "firstName": "Marija", "lastName": "Petrovic", "username": "mara3", "private": false},
-  {"id": 6, "firstName": "Marija", "lastName": "Petrovic", "username": "mara3", "private": false}]
+  profiles = [{"id": 9, "name": "Marija Mikic", "username": "mara", "private": false}, 
+  {"id":8, "name": "Marija Petrovic","username": "mara2", "private": false}, 
+  {"id": 7, "name": "Marija Petrovic","username": "mara3", "private": false},
+  {"id": 6, "name": "Marija  Peric", "username": "mara3", "private": false}]
   result: any;
 
   constructor(
