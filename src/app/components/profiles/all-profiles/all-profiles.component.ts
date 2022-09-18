@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
 
 @Component({
   selector: 'app-all-profiles',
@@ -17,6 +18,7 @@ export class AllProfilesComponent implements OnInit {
     private fb: FormBuilder,
     public dialog: MatDialog,
     private toastr: ToastrService,
+    private accountsService: AccountsService,
   ) { }
 
   profiles = [{"id": 1, "firstName": "Milica", "lastName": "Pavlovic", "username": "senorita", "private": false}, 
@@ -26,6 +28,13 @@ export class AllProfilesComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+    // page num, page size
+    this.accountsService.getAllAccounts(0, 0).subscribe(
+      result=>
+      {
+        this.profiles = result.body;
+      }
+    )
   }
 
   open_profile(id: any): void {
