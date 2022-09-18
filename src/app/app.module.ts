@@ -18,6 +18,7 @@ import { ProfilesModule } from './components/profiles/profiles-module';
 import { MatIconModule } from '@angular/material/icon';
 import { MessagesModule } from './components/messages/messages-module';
 import { CommentsModule } from './components/comments/comments-module';
+import { BlockedAccountsComponent } from './components/profiles/blocked-accounts/blocked-accounts.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
@@ -29,7 +30,8 @@ import { OffersModule } from './components/offers/offers.module';
     AppComponent,
     NavbarNonAuthComponent,
     NavbarUserComponent,
-    NavbarAdminComponent
+    NavbarAdminComponent,
+    BlockedAccountsComponent
   ],
   imports: [
     AppRoutingModule,

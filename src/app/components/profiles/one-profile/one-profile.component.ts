@@ -96,6 +96,7 @@ export class OneProfileComponent implements OnInit {
   message(): void {
     this.router.navigate(['/chat-messages/' + this.id]);
   }
+
   showComments(post: any): void {
     post.showComments = true
   }

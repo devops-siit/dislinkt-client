@@ -1,0 +1,19 @@
+<h1 align="center"> Blocked accounts </h1>
+    <div *ngFor="let p of profiles">
+        <br><br>
+        <table  class="styled-table">
+            <thead>
+                <tr>
+                    <th>{{p?.username}}</th>
+                   <th><button mat-button color="primary"  (click)="unblock()" >Unblock</button></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Name: </td>
+                    <td>{{p?.name}}</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
