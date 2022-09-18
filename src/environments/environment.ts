@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:8080',
-  login: 'auth/log-in',
-  signUp: 'auth/sign-up',
+  authUrl: 'http://localhost:8181',
+  login: 'login',
+  signUp: 'register',
   signOut: 'auth/sign-out',
   changePassword: 'auth/change-password',
 
