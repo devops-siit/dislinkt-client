@@ -18,10 +18,14 @@ import { ProfilesModule } from './components/profiles/profiles-module';
 import { MatIconModule } from '@angular/material/icon';
 import { MessagesModule } from './components/messages/messages-module';
 import { CommentsModule } from './components/comments/comments-module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import { OffersModule } from './components/offers/offers.module';
 
 
 @NgModule({
-  declarations: [
+  declarations: [ 
     AppComponent,
     NavbarNonAuthComponent,
     NavbarUserComponent,
@@ -37,8 +41,13 @@ import { CommentsModule } from './components/comments/comments-module';
     MessagesModule,
     CommentsModule,
     SharedModule,
+    OffersModule,
     BrowserModule,
     ToastrModule.forRoot(),
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatButtonModule
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true}],
