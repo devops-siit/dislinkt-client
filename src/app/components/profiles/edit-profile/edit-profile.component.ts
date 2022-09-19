@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,10 +20,9 @@ export class EditProfileComponent implements OnInit {
   profileForm!: FormGroup;
   currentUser: any = {"uuid": "", "username": ""};
   todayDate!: Date;
-  educations = [{"uuid": 1, "education": "gimnazija"}, {"uuid": 2, "education": "FTN"}];
-  experiences = [{"uuid": 1, "experience": "web design"}, {"uuid": 2, "experience": "software developer"}];
   result: any;
   account: Account = {};
+  pipe = new DatePipe('en-US');
 
   constructor(
     private fb: FormBuilder,
@@ -59,8 +59,7 @@ export class EditProfileComponent implements OnInit {
         )
       }
     )
-    // get profile
-    //TO DO
+    
   }
 
   createForm() : void{
@@ -78,7 +77,24 @@ export class EditProfileComponent implements OnInit {
   }
 
   saveProfileData(): void {
-    //to do
+   
+   
+   let request = {
+    "name": this.profileForm.value.name,
+    "email": this.profileForm.value.email,
+    "gender": this.profileForm.value.gender,
+    "biography": this.profileForm.value.bio,
+    "dateOfBirth": String(this.pipe.transform(this.profileForm.value.dateOfBirth, 'yyyy-MM-dd HH:mm')),
+    "isPublic": this.profileForm.value.isPublic
+   }
+    this.accountService.editAccount(request).subscribe(
+      res=>{
+        this.toastr.success("Successfully edited account");
+        console.log(res)
+      }, error=>{
+        this.toastr.error("Error :(");
+      }
+    )
 
   }
 

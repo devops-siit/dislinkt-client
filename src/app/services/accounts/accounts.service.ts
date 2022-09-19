@@ -91,6 +91,7 @@ export class AccountsService {
 
     //localhost:8087/accounts/education
     insertEducation(education: any): Observable<any>{
+        console.log(education)
         return this.http.post(`${environment.accountUrl}/education`, education,
          {headers: this.headers, responseType: 'json'});
     }

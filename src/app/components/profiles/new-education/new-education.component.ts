@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatGridTileHeaderCssMatStyler } from '@angular/material/grid-list';
 import { ToastrService } from 'ngx-toastr';
+import { DateRange } from 'src/app/model/DateRange';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 
 @Component({
@@ -34,6 +35,7 @@ export class NewEducationComponent implements OnInit {
   createForm(): void {
     this.eduForm = this.fb.group({
       name: ['', Validators.required],
+      title: ['', Validators.required],
       description: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required]
@@ -43,11 +45,13 @@ export class NewEducationComponent implements OnInit {
   addEducation(): void {
     //"2021-10-10 00:00"
     let dateRange = {
-      "startDate": this.pipe.transform(this.eduForm.value.startDate, 'yyyy-MM-dd h:mm'),
-      "endDate": this.pipe.transform(this.eduForm.value.endDate, 'yyyy-MM-dd h:mm')
+      "startDate": String(this.pipe.transform(this.eduForm.value.startDate, 'yyyy-MM-dd HH:mm')),
+      "endDate": String(this.pipe.transform(this.eduForm.value.endDate, 'yyyy-MM-dd HH:mm'))
     }
+
     let edu = {
       "name": this.eduForm.value.name,
+      "title": this.eduForm.value.title,
       "description": this.eduForm.value.description,
       "duration": dateRange
     }
@@ -55,10 +59,10 @@ export class NewEducationComponent implements OnInit {
     this.accountService.insertEducation(edu).subscribe(
       res=>{
         this.toastr.success("Successfull!");
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       }, error =>{
         this.toastr.error("Error :(");
-        this.dialogRef.close();
+        this.dialogRef.close(false);
       }
     )
     

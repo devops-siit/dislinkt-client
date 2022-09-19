@@ -28,10 +28,8 @@
             <th>Username</th>
             <th>
                 <mat-form-field appearance="fill">
-                    <input matInput formControlName="username" required>
-                    <mat-error *ngIf="profileForm.controls.username.touched && profileForm.controls.username.invalid">
-                        <span *ngIf="profileForm.controls.username.errors?.required">This field is mandatory.</span>
-                    </mat-error>
+                    <input matInput formControlName="username" readonly>
+                    
                 </mat-form-field>
             </th>
             <th></th>
