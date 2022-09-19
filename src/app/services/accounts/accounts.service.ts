@@ -27,8 +27,8 @@ export class AccountsService {
                 .append('size', String(size))
                 .append('pattern', ''),
         };
-        return this.http.get(`${environment.accountUrl}/search?pattern=`,
-          {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
+        return this.http.get(`${environment.accountUrl}/search`,
+          queryParams).pipe(map(res => res));
     }
     
     getAccountByUuid(uuid: any):Observable<any> {
@@ -47,7 +47,7 @@ export class AccountsService {
                 .append('pattern', String(pattern)),
         };
         return this.http.get(`${environment.accountUrl}/search`,
-          {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
+        queryParams).pipe(map(res => res));
     }
 
     editAccount(data: any):Observable<any> {

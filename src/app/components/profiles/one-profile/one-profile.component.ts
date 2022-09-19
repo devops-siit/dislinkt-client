@@ -45,7 +45,7 @@ export class OneProfileComponent implements OnInit {
     this.accountService.getAccountByUuid(this.uuid).subscribe(
       res=>{
         this.user = res.body as Account;
-        this.privateAccount = this.user.isPublic;
+        this.privateAccount = this.user.isPublic? true:false;
         // podesi dal se pratimo
         // podesi dal je poslat zahtev za pracenje
       }

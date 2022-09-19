@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { Account } from 'src/app/model/Account';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 import { NewEducationComponent } from '../new-education/new-education.component';
 import { NewWorkExperienceComponent } from '../new-work-experience/new-work-experience.component';
@@ -15,21 +17,48 @@ import { NewWorkExperienceComponent } from '../new-work-experience/new-work-expe
 export class EditProfileComponent implements OnInit {
 
   profileForm!: FormGroup;
+  currentUser: any = {"uuid": "", "username": ""};
   todayDate!: Date;
   educations = [{"uuid": 1, "education": "gimnazija"}, {"uuid": 2, "education": "FTN"}];
   experiences = [{"uuid": 1, "experience": "web design"}, {"uuid": 2, "experience": "software developer"}];
-  result: any
+  result: any;
+  account: Account = {};
 
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
     private toastr: ToastrService,
     private accountService: AccountsService,
+    private authService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
     this.todayDate = new Date();
     this.createForm();
+    this.authService.validateToken().subscribe(
+      res=>{
+        this.currentUser = res.body;
+        this.accountService.getAccountByUuid(this.currentUser.uuid).subscribe(
+          res=>{
+            this.account = res as Account;
+            console.log(res)
+            this.profileForm = this.fb.group({
+              name: [this.account.name],
+              username: [this.account.username],
+              email:[this.account.email],
+              phone:[this.account.phone],
+              birthDate: [this.account.dateOfBirth],
+              bio: [this.account.biography],
+              gender: [this.account.gender],
+              public: [this.account.isPublic],
+              
+               });
+    
+            this.profileForm.patchValue(this.account);
+          }
+        )
+      }
+    )
     // get profile
     //TO DO
   }

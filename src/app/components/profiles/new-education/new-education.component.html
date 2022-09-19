@@ -3,12 +3,41 @@
     <h2 mat-dialog-title>New education</h2>
     <br>
     <mat-form-field appearance="fill">
-        <mat-label>Education</mat-label>
-        <input id="education" matInput formControlName="education">
-        <mat-error *ngIf="eduForm.controls.education.touched && eduForm.controls.education.invalid">
-            <span *ngIf="eduForm.controls.education.errors?.required">This field is mandatory.</span>
+        <mat-label>Name</mat-label>
+        <input id="education" matInput formControlName="name">
+        <mat-error *ngIf="eduForm.controls.name.touched && eduForm.controls.name.invalid">
+            <span *ngIf="eduForm.controls.name.errors?.required">This field is mandatory.</span>
         </mat-error>
     </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <input  matInput formControlName="description">
+        <mat-error *ngIf="eduForm.controls.description.touched && eduForm.controls.description.invalid">
+            <span *ngIf="eduForm.controls.description.errors?.required">This field is mandatory.</span>
+        </mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Start date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="startDate" [max]="todayDate" required>
+        <mat-datepicker-toggle matSuffix [for]="picker" id="datePickerToggleBtn" ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="eduForm.controls.startDate.touched && eduForm.controls.startDate.invalid">
+            <span *ngIf="eduForm.controls.startDate.errors?.required">This field is mandatory.</span>
+        </mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>End date</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="endDate" [max]="todayDate" required>
+        <mat-datepicker-toggle matSuffix [for]="picker1" id="datePickerToggleBtn" ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+        <mat-error *ngIf="eduForm.controls.endDate.touched && eduForm.controls.endDate.invalid">
+            <span *ngIf="eduForm.controls.endDate.errors?.required">This field is mandatory.</span>
+        </mat-error>
+    </mat-form-field>
+    <br>
     <mat-dialog-actions align="end">
         <button mat-raised-button mat-dialog-close>Cancel</button>
         <button id="eduSubmit" type="submit" mat-raised-button color="success">Save</button>
