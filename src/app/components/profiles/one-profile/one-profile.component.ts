@@ -12,6 +12,9 @@ import { PostService } from 'src/app/services/post/post.service';
 import { ToastrService } from 'ngx-toastr';
 import { Comment } from 'src/app/model/Comment';
 import { Post } from 'src/app/model/Post';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { ChatService } from 'src/app/services/chat/chat.service';
+import { Chat } from 'src/app/model/Chat';
 
 @Component({
   selector: 'app-one-profile',
@@ -28,6 +31,8 @@ export class OneProfileComponent implements OnInit {
   sendRequest = false;
   privateAccount = true;
   result: any;
+  currentUser?: Account;
+  myChats: Chat[] = [];
 
   constructor( 
     private route: ActivatedRoute,
@@ -37,6 +42,8 @@ export class OneProfileComponent implements OnInit {
     private accountService: AccountsService,
     private postService: PostService,
     private toastr: ToastrService,
+    private authService: AuthenticationService,
+    private chatService: ChatService,
   ) { }
 
   ngOnInit(): void {
@@ -44,10 +51,15 @@ export class OneProfileComponent implements OnInit {
     this.uuid = this.route.snapshot.params.uuid;
     this.accountService.getAccountByUuid(this.uuid).subscribe(
       res=>{
-        this.user = res.body as Account;
+        this.user = res as Account;
         this.privateAccount = this.user.isPublic? true:false;
         // podesi dal se pratimo
         // podesi dal je poslat zahtev za pracenje
+      }
+    );
+    this.authService.validateToken().subscribe(
+      res=>{
+        this.currentUser = res.body as Account;
       }
     )
 
@@ -127,7 +139,32 @@ export class OneProfileComponent implements OnInit {
     }
   }
   message(): void {
-    this.router.navigate(['/chat-messages/' + this.uuid]);
+    // proveri prvo dal postoji chat taj chat
+    let existing = false;
+    let chatUuid ;
+    this.chatService.getChatsByAccount().subscribe(
+      res=>{
+        this.myChats = res.body as Chat[];
+        for(var chat of this.myChats){
+          if(chat.account?.uuid == this.uuid){
+            existing = true; // postoji chat
+            chatUuid = chat.uuid;
+          }
+        }
+      }
+    );
+    if (existing) {
+      this.router.navigate(['/chat-messages/' + chatUuid+'/'+this.user?.username + '/'+this.user?.uuid]);
+    }
+    else {
+      this.chatService.insertChat(this.user?.uuid).subscribe(
+        res=>{
+          let newChat = res.body as Chat;
+          this.router.navigate(['/chat-messages/' + newChat.uuid +'/'+this.user?.username + '/'+this.user?.uuid]);
+        }
+      )
+    }
+    
   }
 
   showComments(post: any): void {

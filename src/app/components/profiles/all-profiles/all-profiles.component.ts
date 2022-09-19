@@ -34,7 +34,7 @@ export class AllProfilesComponent implements OnInit {
     this.accountsService.getAllAccounts(0, 5).subscribe(
       res=>
       {
-        this.profiles = res.body as Account[];
+        this.profiles = res.body.content as Account[];
       }
     )
   }
@@ -53,7 +53,7 @@ export class AllProfilesComponent implements OnInit {
     if(this.searchForm.value.name != "") {
       this.accountsService.searchAccounts(this.searchForm.value.name,0, 5).subscribe(
         res=>{
-          this.profiles = res.body as Account[];
+          this.profiles = res.body.content as Account[];
         }
       )
     }
@@ -62,7 +62,7 @@ export class AllProfilesComponent implements OnInit {
     this.accountsService.getAllAccounts(0, 5).subscribe(
       res=>
       {
-        this.profiles = res.body as Account[];
+        this.profiles = res.body.content as Account[];
       }
     )
   }

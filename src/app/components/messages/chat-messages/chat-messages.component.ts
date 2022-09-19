@@ -40,6 +40,8 @@ export class ChatMessagesComponent implements OnInit {
       res=>{
         this.messages = res.body as Message[];
 
+      }, error=>{
+        
       }
     )
     

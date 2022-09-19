@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -19,9 +19,17 @@ export class ChatService {
     "accountUuid": "de829ab9-6a1f-4b2a-800f-cc29aa399246"
 }
 */
-    insertChat(data: any):Observable<any> {
-        return this.http.post(`${environment.chat}`, data,
-          {headers: this.headers, responseType: 'json'});
+    insertChat(accountUuid: any):Observable<any> {
+        // request param
+        let queryParams = {};
+        queryParams = {
+        headers: this.headers,
+            observe: 'response',
+            params: new HttpParams()
+                .set('accountUuid', String(accountUuid)),
+                
+        };
+        return this.http.post(`${environment.chat}`,queryParams);
     }
 
     getChatsByAccount() :Observable<any> {
