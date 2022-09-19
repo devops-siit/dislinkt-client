@@ -53,7 +53,7 @@ export class NewCommentComponent implements OnInit {
           this.toastr.error("Cannot add comment");
       }
     )
-    this.dialogRef.close();
+    this.dialogRef.close(true);
 
   }
 

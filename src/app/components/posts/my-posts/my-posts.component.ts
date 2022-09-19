@@ -50,7 +50,7 @@ export class MyPostsComponent implements OnInit {
         this.currentUser = res.body as Account;
         this.postService.getPostsByAccount(this.currentUser.uuid, 0, 5).subscribe(
           res=>{
-            this.posts = res.body as Post[];
+            this.posts = res.content as Post[];
           }
         )
       }
@@ -71,28 +71,8 @@ export class MyPostsComponent implements OnInit {
       commentText: ['']
     });
   }
-
-  sendComment(uuid: any): void {
-    const dialogRef = this.dialog.open(NewCommentComponent);
-    dialogRef.componentInstance.postUuid = uuid;
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-
-  }
-
-  showComments(post: any): void {
-    post.comments = [{"text": "bla bla"}];
-    this.postService.getCommentsByPost(post.uuid, 0, 5).subscribe(
-      res=>{
-        post.comment = res.body as Comment[];
-      }
-    )
-    post.showComments = true
-  }
-  
-  hideComments(post: any): void{
-    post.showComments = false
+  readMore(postUuid: any): void {
+    this.router.navigate(['/one-post/' + postUuid]);
   }
 
   like(uuid: any): void{

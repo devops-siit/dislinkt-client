@@ -24,6 +24,10 @@ export class PostService {
           {headers: this.headers, responseType: 'json'});
     }
 
+    getPostByUuid(uuid: any):Observable<any> {
+        return this.http.get(`${environment.post}/post/${uuid}`,
+          {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
+    }
     getPostsByAccount(uuid: any, page: number, size: number) :Observable<any> {
         let queryParams = {};
         queryParams = {
@@ -57,7 +61,7 @@ export class PostService {
                 .append('size', String(size)),
         };
         return this.http.get(`${environment.comment}/${uuid}`,
-          {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
+          queryParams).pipe(map(res => res));
     }
 
     /*

@@ -12,6 +12,7 @@ import { OneProfileComponent } from '../components/profiles/one-profile/one-prof
 import { LoginGuard } from '../guards/login/login.service';
 import { RoleGuard } from '../guards/role/role.service';
 import { MyPostsComponent } from '../components/posts/my-posts/my-posts.component';
+import { OnePostComponent } from '../components/posts/one-post/one-post.component';
 
 
 export const routes: Routes = [
@@ -61,6 +62,10 @@ export const routes: Routes = [
    {
       path: 'my-posts',
       component: MyPostsComponent,
+   },
+   {
+      path: 'one-post/:uuid',
+      component: OnePostComponent,
    },
    
  

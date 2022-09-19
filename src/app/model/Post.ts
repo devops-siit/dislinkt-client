@@ -1,10 +1,9 @@
 import { Comment } from "./Comment";
 
-export interface Post{
+export class Post{
     uuid?: string;
     text?: string;
     likesCount?: number;
     dislikesCount?: number;
-    showComments: boolean ;
     comments?: Comment[];
 }

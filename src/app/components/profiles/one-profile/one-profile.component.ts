@@ -66,7 +66,7 @@ export class OneProfileComponent implements OnInit {
 
     this.postService.getPostsByAccount(this.uuid, 0, 5).subscribe(
       res=>{
-        this.posts = res.body as Post[];
+        this.posts = res.content as Post[];
       }
     )
   }
@@ -77,14 +77,6 @@ export class OneProfileComponent implements OnInit {
     });
   }
 
-  sendComment(uuid: any): void {
-    const dialogRef = this.dialog.open(NewCommentComponent);
-    dialogRef.componentInstance.postUuid = uuid;
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-
-  }
 
   follow(): void {
     if (this.privateAccount) {
@@ -167,20 +159,10 @@ export class OneProfileComponent implements OnInit {
     }
     
   }
-
-  showComments(post: any): void {
-    post.comments = [{"text": "bla bla"}];
-    this.postService.getCommentsByPost(post.uuid, 0, 5).subscribe(
-      res=>{
-        post.comment = res.body as Comment[];
-      }
-    )
-    post.showComments = true
+  readMore(postUuid: any): void {
+    this.router.navigate(['/one-post/' + postUuid]);
   }
-  
-  hideComments(post: any): void{
-    post.showComments = false
-  }
+ 
   block():void{
     const message = `Are you sure you want to block user?`
     const dialogData = new ConfirmDialogModel('Confirm Action', message);
