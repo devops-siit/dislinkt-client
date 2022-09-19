@@ -6,6 +6,12 @@ import { MatDialog } from '@angular/material/dialog';
 
 
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
+import { Account } from 'src/app/model/Account';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { PostService } from 'src/app/services/post/post.service';
+import { ToastrService } from 'ngx-toastr';
+import { Comment } from 'src/app/model/Comment';
+import { Post } from 'src/app/model/Post';
 
 @Component({
   selector: 'app-one-profile',
@@ -15,10 +21,11 @@ import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirma
 export class OneProfileComponent implements OnInit {
 
   commentForm!: FormGroup;
-  id: any = "";
-  user: any = {};
-  posts: any = [];
+  uuid: any = "";
+  user?: Account;
+  posts: Post[] = [];
   following = true;
+  sendRequest = false;
   privateAccount = true;
   result: any;
 
@@ -27,15 +34,28 @@ export class OneProfileComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     public dialog: MatDialog,
+    private accountService: AccountsService,
+    private postService: PostService,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
     this.createForm();
-    this.id = this.route.snapshot.params.id;
-    // TO DO dobavi usera, dobavi njegove postove
-    this.user = {"id": this.id, "username": "senorita"};
+    this.uuid = this.route.snapshot.params.uuid;
+    this.accountService.getAccountByUuid(this.uuid).subscribe(
+      res=>{
+        this.user = res.body as Account;
+        this.privateAccount = this.user.isPublic;
+        // podesi dal se pratimo
+        // podesi dal je poslat zahtev za pracenje
+      }
+    )
 
-    this.posts = [{"id":1,"text": "post1", "showComments": false, "likes":35, "dislikes":5, "comments": [{"username": "Stoja", "text": "VRHH"}]}, {"id":2,"text": "post2",  "showComments": false, "comments": []}];
+    this.postService.getPostsByAccount(this.uuid, 0, 5).subscribe(
+      res=>{
+        this.posts = res.body as Post[];
+      }
+    )
   }
 
   createForm(): void {
@@ -44,9 +64,9 @@ export class OneProfileComponent implements OnInit {
     });
   }
 
-  sendComment(id: any): void {
+  sendComment(uuid: any): void {
     const dialogRef = this.dialog.open(NewCommentComponent);
-    dialogRef.componentInstance.postId = id;
+    dialogRef.componentInstance.postUuid = uuid;
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
@@ -54,7 +74,18 @@ export class OneProfileComponent implements OnInit {
   }
 
   follow(): void {
-
+    if (this.privateAccount) {
+      this.accountService.sendFollowRequest(this.uuid).subscribe(
+        res=>{
+            this.toastr.success("Follow send");
+      }, error=>{
+        this.toastr.error("Follow not send");
+      })
+    }
+    else{
+      // zaprati nalog nije privatan
+    }
+    
   }
   unfollow(): void{
     if (this.privateAccount) {
@@ -67,6 +98,7 @@ export class OneProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
         if (this.result === true){
+
           // this.profileService.unfollowkAccount(this.user.id).subscribe(
           //   result => {
           //     this.toastr.success('User unfollowed');
@@ -80,6 +112,7 @@ export class OneProfileComponent implements OnInit {
           }
       })
     }
+    // nije privatan
     else {
       // unfollow user
       // this.profileService.unfollowkAccount(this.user.id).subscribe(
@@ -94,10 +127,16 @@ export class OneProfileComponent implements OnInit {
     }
   }
   message(): void {
-    this.router.navigate(['/chat-messages/' + this.id]);
+    this.router.navigate(['/chat-messages/' + this.uuid]);
   }
 
   showComments(post: any): void {
+    post.comments = [{"text": "bla bla"}];
+    this.postService.getCommentsByPost(post.uuid, 0, 5).subscribe(
+      res=>{
+        post.comment = res.body as Comment[];
+      }
+    )
     post.showComments = true
   }
   
@@ -128,10 +167,18 @@ export class OneProfileComponent implements OnInit {
           }
       })
   }
-  like(id: any): void{
-
+  like(uuid: any): void{
+    this.postService.likePost(uuid).subscribe(
+      res=> {
+        window.location.reload();
+      }
+    )
   }
-  dislike(id: any): void {
-
+  dislike(uuid: any): void {
+    this.postService.dislikePost(uuid).subscribe(
+      res=>{
+        window.location.reload();
+      }
+    )
   }
 }

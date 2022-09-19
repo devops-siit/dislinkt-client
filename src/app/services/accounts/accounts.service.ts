@@ -30,6 +30,11 @@ export class AccountsService {
         return this.http.get(`${environment.accountUrl}/search?pattern=`,
           {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
     }
+    
+    getAccountByUuid(uuid: any):Observable<any> {
+        return this.http.get(`${environment.accountUrl}/${uuid}`,
+          {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
+    }
 
     searchAccounts(pattern: any, page: number, size: number):Observable<any> {
         let queryParams = {};

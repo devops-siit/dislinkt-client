@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 import { NewEducationComponent } from '../new-education/new-education.component';
 import { NewWorkExperienceComponent } from '../new-work-experience/new-work-experience.component';
@@ -15,19 +16,22 @@ export class EditProfileComponent implements OnInit {
 
   profileForm!: FormGroup;
   todayDate!: Date;
-  educations = [{"id": 1, "education": "gimnazija"}, {"id": 2, "education": "FTN"}];
-  experiences = [{"id": 1, "experience": "web design"}, {"id": 2, "experience": "software developer"}];
+  educations = [{"uuid": 1, "education": "gimnazija"}, {"uuid": 2, "education": "FTN"}];
+  experiences = [{"uuid": 1, "experience": "web design"}, {"uuid": 2, "experience": "software developer"}];
   result: any
 
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
     private toastr: ToastrService,
+    private accountService: AccountsService,
   ) { }
 
   ngOnInit(): void {
     this.todayDate = new Date();
     this.createForm();
+    // get profile
+    //TO DO
   }
 
   createForm() : void{
@@ -45,10 +49,11 @@ export class EditProfileComponent implements OnInit {
   }
 
   saveProfileData(): void {
-  
+    //to do
+
   }
 
-  removeEducation(id:any):void{
+  removeEducation(uuid:any):void{
     const message = `Are you sure you want to remove education?`
     const dialogData = new ConfirmDialogModel('Confirm Action', message);
     const dialogRef = this.dialog.open(ConfirmationComponent, {
@@ -59,27 +64,28 @@ export class EditProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
         if (this.result === true){
-          // this.profileService.deleteEducation(id).subscribe(
-          //   result => {
-          //     this.toastr.success('Experience successfully removed.');
-          //     window.location.reload();
-          //   }, error => {
-          //     this.toastr.error('Cannot remove experience');
-      
-          //   }
-          // );
-
-          }
+          this.accountService.deleteEducation(uuid).subscribe(
+            res=>{
+              this.toastr.success('Experience successfully removed.');
+              window.location.reload();
+            },error=>{
+              this.toastr.error('Cannot remove experience');
+            });
+        }
       })
   }
   addEducation():void {
     const dialogRef = this.dialog.open(NewEducationComponent);
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+      this.result = result;
+        if (this.result === true){
+          
+          window.location.reload();
+        }
+      });
   }
 
-  removeWorkExperience(id:any):void{
+  removeWorkExperience(uuid:any):void{
     const message = `Are you sure you want to remove work experience?`
     const dialogData = new ConfirmDialogModel('Confirm Action', message);
     const dialogRef = this.dialog.open(ConfirmationComponent, {
@@ -90,23 +96,25 @@ export class EditProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
         if (this.result === true){
-          // this.profileService.deleteExperience(id).subscribe(
-          //   result => {
-          //     this.toastr.success('Experience successfully removed.');
-          //     window.location.reload();
-          //   }, error => {
-          //     this.toastr.error('Cannot remove experience');
-      
-          //   }
-          // );
+          this.accountService.deleteWork(uuid).subscribe(
+            res=>{
+              this.toastr.success('Experience successfully removed.');
+              window.location.reload();
+            }, error=>{
+                this.toastr.error('Cannot remove experience');
 
+            });
           }
       })
   }
   addWorkExperience():void {
     const dialogRef = this.dialog.open(NewWorkExperienceComponent);
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      this.result = result;
+        if (this.result === true){
+          
+          window.location.reload();
+        }
     });
   }
 

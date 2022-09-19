@@ -24,18 +24,18 @@
         <table  class="styled-table">
             <thead>
                 <tr>
-                    <th><button mat-button (click)="open_profile(p.id)" >{{p?.username}}</button></th>
+                    <th><button mat-button (click)="open_profile(p.uuid)" >{{p?.username}}</button></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>First Name: </td>
-                    <td>{{p?.firstName}}</td>
+                    <td>Name: </td>
+                    <td>{{p?.name}}</td>
                 </tr>
                 <tr>
-                    <td>Last Name: </td>
-                    <td>{{p?.lastName}}</td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>

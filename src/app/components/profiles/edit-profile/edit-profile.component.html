@@ -136,7 +136,7 @@
             <td>{{edu.education}}</td>
             <td></td>
             <td >
-                <button mat-raised-button (click)="removeEducation(edu.id)" >
+                <button mat-raised-button (click)="removeEducation(edu.uuid)" >
                     <mat-icon aria-hidden="false" aria-label="Example home icon">clear</mat-icon>
                 </button>
             </td>
@@ -168,7 +168,7 @@
             <td>{{exp.experience}}</td>
             <td></td>
             <td >
-                <button mat-raised-button (click)="removeWorkExperience(exp.id)" >
+                <button mat-raised-button (click)="removeWorkExperience(exp.uuid)" >
                     <mat-icon aria-hidden="false" aria-label="Example home icon">clear</mat-icon>
                 </button>
             </td>

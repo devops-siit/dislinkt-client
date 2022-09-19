@@ -24,8 +24,8 @@ export class ChatService {
           {headers: this.headers, responseType: 'json'});
     }
 
-    getChatsByAccount(uuid: any) :Observable<any> {
-        return this.http.get(`${environment.chat}/${uuid}`,
+    getChatsByAccount() :Observable<any> {
+        return this.http.get(`${environment.chat}`,
           {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
     }
 

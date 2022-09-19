@@ -29,7 +29,7 @@ export const routes: Routes = [
       component: AllProfilesComponent,
    },
    {
-      path: 'profile/:id',
+      path: 'profile/:uuid',
       component: OneProfileComponent,
    },
    {
@@ -37,7 +37,7 @@ export const routes: Routes = [
       component: EditProfileComponent,
    },
    {
-      path: 'chat-messages/:id',
+      path: 'chat-messages/:uuid/:username/:userUuid',
       component: ChatMessagesComponent,
    },
    {
