@@ -11,6 +11,7 @@ import { EditProfileComponent } from '../components/profiles/edit-profile/edit-p
 import { OneProfileComponent } from '../components/profiles/one-profile/one-profile.component';
 import { LoginGuard } from '../guards/login/login.service';
 import { RoleGuard } from '../guards/role/role.service';
+import { MyPostsComponent } from '../components/posts/my-posts/my-posts.component';
 
 
 export const routes: Routes = [
@@ -56,6 +57,10 @@ export const routes: Routes = [
    {
       path: 'create-offer',
       component: CreateOfferComponent,
+   },
+   {
+      path: 'my-posts',
+      component: MyPostsComponent,
    },
    
  

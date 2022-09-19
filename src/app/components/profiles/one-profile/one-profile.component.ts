@@ -52,6 +52,7 @@ export class OneProfileComponent implements OnInit {
     this.accountService.getAccountByUuid(this.uuid).subscribe(
       res=>{
         this.user = res as Account;
+  
         this.privateAccount = this.user.isPublic? true:false;
         // podesi dal se pratimo
         // podesi dal je poslat zahtev za pracenje
@@ -144,7 +145,7 @@ export class OneProfileComponent implements OnInit {
     let chatUuid ;
     this.chatService.getChatsByAccount().subscribe(
       res=>{
-        this.myChats = res.body as Chat[];
+        this.myChats = res as Chat[];
         for(var chat of this.myChats){
           if(chat.account?.uuid == this.uuid){
             existing = true; // postoji chat
@@ -154,13 +155,13 @@ export class OneProfileComponent implements OnInit {
       }
     );
     if (existing) {
-      this.router.navigate(['/chat-messages/' + chatUuid+'/'+this.user?.username + '/'+this.user?.uuid]);
+      this.router.navigate(['/chat-messages/' + chatUuid+'/'+this.user?.username + '/'+this.uuid]);
     }
     else {
-      this.chatService.insertChat(this.user?.uuid).subscribe(
+      this.chatService.insertChat(this.uuid).subscribe(
         res=>{
-          let newChat = res.body as Chat;
-          this.router.navigate(['/chat-messages/' + newChat.uuid +'/'+this.user?.username + '/'+this.user?.uuid]);
+          let newChat = res as Chat;
+          this.router.navigate(['/chat-messages/' + newChat.uuid +'/'+this.user?.username + '/'+ this.uuid]);
         }
       )
     }
@@ -191,17 +192,12 @@ export class OneProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
         if (this.result === true){
-          // this.profileService.blockAccount(this.user.id).subscribe(
-          //   result => {
-          //     this.toastr.success('User blocked');
-          //     window.location.reload();
-          //   }, error => {
-          //     this.toastr.error('Cannot block user');
-      
-          //   }
-          // );
-
-          }
+          this.accountService.blockAccount(this.uuid).subscribe(
+            res=>{
+              this.toastr.success('User blocked');
+               window.location.reload();
+            }
+          )}
       })
   }
   like(uuid: any): void{

@@ -38,7 +38,7 @@ export class ChatMessagesComponent implements OnInit {
     this.withUserUuid = this.route.snapshot.params.userUuid;
     this.chatService.getMessagesByChat(this.uuid).subscribe(
       res=>{
-        this.messages = res.body as Message[];
+        this.messages = res.content as Message[];
 
       }, error=>{
         
@@ -52,7 +52,8 @@ export class ChatMessagesComponent implements OnInit {
     }
     let newMessage = {"accountUuid": this.withUserUuid,  "text": ""};
     newMessage.text = this.messageForm.value['message'];
-    this.chatService.insertMessage(newMessage).subscribe(
+    console.log(newMessage)
+    this.chatService.insertMessage(newMessage, this.uuid).subscribe(
       res=>{
           //reload
           window.location.reload();

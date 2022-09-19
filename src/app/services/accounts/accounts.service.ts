@@ -111,5 +111,19 @@ export class AccountsService {
          {headers: this.headers, responseType: 'json'});
     }
 
+
+    blockAccount(uuid: any): Observable<any> {
+        return this.http.patch(`${environment.accountUrl}/${uuid}/block`,
+         {headers: this.headers, responseType: 'json'});
+    }
    
+    unblockAccount(uuid: any): Observable<any> {
+        return this.http.patch(`${environment.accountUrl}/${uuid}/unblock`,
+         {headers: this.headers, responseType: 'json'});
+    }
+
+    getBlockedAccounts(): Observable<any> {
+        return this.http.get(`${environment.accountUrl}/blocking`,
+         {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
+    }
 }
