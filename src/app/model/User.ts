@@ -1,5 +1,6 @@
 
 export class User{
+    uuid?: string;
     id?: number;
     name?: string;
     phone?: string;
