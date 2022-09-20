@@ -24,6 +24,7 @@ export class AuthenticationService {
         if (!localStorage.getItem('user')) {
                 return false;
         }
+        console.log("tu je")
         return true;
     }
 
@@ -37,9 +38,8 @@ export class AuthenticationService {
     }
 
 
-    signOut(): Observable<any> {
-        return this.http.get(`${environment.authUrl}/${environment.signOut}`, {headers: this.headers});
-
+    signOut(): void {
+        localStorage.removeItem('user');
     }
 
     changePassword(passwordData: any): Observable<any> {

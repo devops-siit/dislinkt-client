@@ -12,7 +12,7 @@
               <td>{{user?.username}} </td>
               <td *ngIf="!following && !privateAccount"><button mat-raised-button color="primary"  (click)="follow()" >Follow</button></td>
               <td *ngIf="following" ><button mat-raised-button color="primary" (click)="unfollow()" >Unfollow</button></td>
-              <td *ngIf="!following && privateAccount"><button mat-raised-button color="primary"  (click)="unfollow()" >Send request</button></td>
+              <td *ngIf="!following && privateAccount"><button mat-raised-button color="primary"  (click)="follow()" >Send request</button></td>
               <td><button mat-raised-button (click)="message()" >Message</button></td>
               <td><button mat-raised-button color="warn" (click)="block()" >Block</button></td>
 

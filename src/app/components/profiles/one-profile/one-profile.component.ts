@@ -27,12 +27,14 @@ export class OneProfileComponent implements OnInit {
   uuid: any = "";
   user?: Account;
   posts: Post[] = [];
-  following = true;
-  sendRequest = false;
-  privateAccount = true;
+  following = false;
+  sendRequest = true;
+  requestSent = false;
+  privateAccount = false;
   result: any;
   currentUser?: Account;
   myChats: Chat[] = [];
+  myFollowing: Account[] = [];
 
   constructor( 
     private route: ActivatedRoute,
@@ -49,20 +51,34 @@ export class OneProfileComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this.uuid = this.route.snapshot.params.uuid;
-    this.accountService.getAccountByUuid(this.uuid).subscribe(
-      res=>{
-        this.user = res as Account;
-  
-        this.privateAccount = this.user.isPublic? true:false;
-        // podesi dal se pratimo
-        // podesi dal je poslat zahtev za pracenje
-      }
-    );
+
     this.authService.validateToken().subscribe(
       res=>{
         this.currentUser = res.body as Account;
+        this.accountService.getFollowing(this.currentUser?.uuid).subscribe(
+          res=>{
+            this.myFollowing = res.content as Account[];
+            for(var acc of this.myFollowing){
+              if(acc.uuid == this.uuid){
+                this.following = true; // pratimo se
+                if(!acc.isPublic){
+                  this.privateAccount = true;
+                  console.log(this.privateAccount)
+                }
+              }
+            }
+          }
+        )
       }
     )
+    
+    this.accountService.getAccountByUuid(this.uuid).subscribe(
+      res=>{
+        this.user = res as Account;
+        this.privateAccount = this.user.isPublic? false:true;
+      }
+    );
+    
 
     this.postService.getPostsByAccount(this.uuid, 0, 5).subscribe(
       res=>{
@@ -88,7 +104,12 @@ export class OneProfileComponent implements OnInit {
       })
     }
     else{
-      // zaprati nalog nije privatan
+      this.accountService.followAccount(this.uuid).subscribe(
+        res=>{
+          this.following = true;
+          this.toastr.success("You're now following "+ this.user?.username);
+        }
+      )
     }
     
   }
@@ -104,31 +125,23 @@ export class OneProfileComponent implements OnInit {
       this.result = dialogResult;
         if (this.result === true){
 
-          // this.profileService.unfollowkAccount(this.user.id).subscribe(
-          //   result => {
-          //     this.toastr.success('User unfollowed');
-          //     window.location.reload();
-          //   }, error => {
-          //     this.toastr.error('Cannot unfollow user');
-      
-          //   }
-          // );
-
-          }
+          this.accountService.unFollowAccount(this.uuid).subscribe(
+            res=>{
+              this.following = false;
+              this.toastr.success('User unfollowed');
+            }
+          )
+        }
       })
     }
     // nije privatan
     else {
-      // unfollow user
-      // this.profileService.unfollowkAccount(this.user.id).subscribe(
-          //   result => {
-          //     this.toastr.success('User unfollowed');
-          //     window.location.reload();
-          //   }, error => {
-          //     this.toastr.error('Cannot unfollow user');
-      
-          //   }
-          // );
+      this.accountService.unFollowAccount(this.uuid).subscribe(
+        res=>{
+          this.following = false;
+          this.toastr.success('User unfollowed');
+        }
+      )
     }
   }
   message(): void {

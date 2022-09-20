@@ -126,4 +126,13 @@ export class AccountsService {
         return this.http.get(`${environment.accountUrl}/blocking`,
          {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
     }
+
+    followAccount(uuid: any): Observable<any> {
+        return this.http.patch(`${environment.follows}/follow/${uuid}`,
+         {headers: this.headers, responseType: 'json'});
+    }
+    unFollowAccount(uuid: any): Observable<any> {
+        return this.http.patch(`${environment.follows}/unfollow/${uuid}`,
+         {headers: this.headers, responseType: 'json'});
+    }
 }

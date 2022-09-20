@@ -13,59 +13,79 @@ import { LoginGuard } from '../guards/login/login.service';
 import { RoleGuard } from '../guards/role/role.service';
 import { MyPostsComponent } from '../components/posts/my-posts/my-posts.component';
 import { OnePostComponent } from '../components/posts/one-post/one-post.component';
+import { PublicProfilesComponent } from '../components/profiles/public-profiles/public-profiles.component';
+import { FollowRequestsComponent } from '../components/profiles/follow-requests/follow-requests.component';
 
 
 export const routes: Routes = [
     {
        path: 'login',
        component: LoginPageComponent,
-      // canActivate: [LoginGuard] // putanja kojoj moze da pristupi korisnik samo ukoliko NIJE ulogovan
+       canActivate: [LoginGuard] // putanja kojoj moze da pristupi korisnik samo ukoliko NIJE ulogovan
     },
     {
       path: 'register',
       component: RegistrationComponent,
-    //  canActivate: [LoginGuard] // putanja kojoj moze da pristupi korisnik samo ukoliko NIJE ulogovan
+      canActivate: [LoginGuard] // putanja kojoj moze da pristupi korisnik samo ukoliko NIJE ulogovan
    },
    {
       path: 'profiles',
       component: AllProfilesComponent,
+           
+   },
+   {
+      path: 'public-profiles',
+      component: PublicProfilesComponent,
+      canActivate: [LoginGuard]
    },
    {
       path: 'profile/:uuid',
       component: OneProfileComponent,
+      
    },
    {
       path: 'edit-profile',
       component: EditProfileComponent,
+      
    },
    {
       path: 'chat-messages/:uuid/:username/:userUuid',
       component: ChatMessagesComponent,
+      
    },
    {
       path: 'all-chats',
       component: AllChatsComponent,
+      
    },
 
    {
       path: 'blocked-accounts',
       component: BlockedAccountsComponent,
+      
    },
    {
       path: 'job-offers',
       component: AllOffersComponent,
+     
    },
    {
       path: 'create-offer',
       component: CreateOfferComponent,
+      
    },
    {
       path: 'my-posts',
       component: MyPostsComponent,
+      
    },
    {
       path: 'one-post/:uuid',
       component: OnePostComponent,
+   },
+   {
+      path: 'follow-requests',
+      component: FollowRequestsComponent,
    },
    
  

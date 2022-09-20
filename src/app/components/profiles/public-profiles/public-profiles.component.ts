@@ -7,11 +7,11 @@ import { Account } from 'src/app/model/Account';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 
 @Component({
-  selector: 'app-all-profiles',
-  templateUrl: './all-profiles.component.html',
-  styleUrls: ['./all-profiles.component.scss']
+  selector: 'app-public-profiles',
+  templateUrl: './public-profiles.component.html',
+  styleUrls: ['./public-profiles.component.scss']
 })
-export class AllProfilesComponent implements OnInit {
+export class PublicProfilesComponent implements OnInit {
 
   profiles: Account[] = []
   searchForm!: FormGroup;
@@ -22,7 +22,6 @@ export class AllProfilesComponent implements OnInit {
     private toastr: ToastrService,
     private accountsService: AccountsService,
   ) { }
-
 
   ngOnInit(): void {
     this.createForm();

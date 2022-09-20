@@ -9,7 +9,7 @@
         <button  mat-button [routerLink]="['/my-posts']" > My Posts </button>
         <button  mat-button [routerLink]="['/all-chats']" > My Chats </button>
 		<button  mat-button [routerLink]="['/job-offers']" > Job offers </button>
-		<button  mat-button [routerLink]="['/create-offer']" > Create offer </button>
+		<button  *ngIf="!isPublic" mat-button [routerLink]="['/follow-requests']" >Follow requests</button>
 		<button  mat-button [routerLink]="['/edit-profile']" > My profile </button>
 		<button  mat-button [routerLink]="['/blocked-accounts']" > Blocked accounts </button>
 		

@@ -78,19 +78,18 @@ export class EditProfileComponent implements OnInit {
 
   saveProfileData(): void {
    
-   
    let request = {
     "name": this.profileForm.value.name,
     "email": this.profileForm.value.email,
     "gender": this.profileForm.value.gender,
     "biography": this.profileForm.value.bio,
-    "dateOfBirth": String(this.pipe.transform(this.profileForm.value.dateOfBirth, 'yyyy-MM-dd HH:mm')),
-    "isPublic": this.profileForm.value.isPublic
+    "dateOfBirth": String(this.pipe.transform(this.profileForm.value.birthDate, 'yyyy-MM-dd HH:mm')),
+    "isPublic": this.profileForm.value.public
    }
     this.accountService.editAccount(request).subscribe(
       res=>{
         this.toastr.success("Successfully edited account");
-        console.log(res)
+        window.location.reload();
       }, error=>{
         this.toastr.error("Error :(");
       }

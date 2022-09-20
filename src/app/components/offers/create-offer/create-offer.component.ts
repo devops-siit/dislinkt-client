@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { OfferService } from 'src/app/services/offer-service/offer-service.service';
 
 
 
@@ -18,6 +20,8 @@ export class CreateOfferComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthenticationService,
     private toastr: ToastrService,
+    private router: Router,
+    private offersService: OfferService,
   ) { }
 
   ngOnInit(): void {
@@ -42,7 +46,15 @@ export class CreateOfferComponent implements OnInit {
       prerequisites: this.regForm.get('prerequisites')?.value,
     }
     console.log(data)
-    //
+    this.offersService.createOffer(data).subscribe(
+      res=>{
+        this.toastr.success("Offer added")
+        this.router.navigate(['/job-offers' ]);
+      }, error=>{
+        this.toastr.error("Cannot add offer :(")
+        console.log(error)
+      }
+    )
 
   }
 

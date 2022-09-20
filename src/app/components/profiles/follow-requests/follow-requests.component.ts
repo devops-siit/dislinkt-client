@@ -7,11 +7,11 @@ import { Account } from 'src/app/model/Account';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 
 @Component({
-  selector: 'app-all-profiles',
-  templateUrl: './all-profiles.component.html',
-  styleUrls: ['./all-profiles.component.scss']
+  selector: 'app-follow-requests',
+  templateUrl: './follow-requests.component.html',
+  styleUrls: ['./follow-requests.component.scss']
 })
-export class AllProfilesComponent implements OnInit {
+export class FollowRequestsComponent implements OnInit {
 
   profiles: Account[] = []
   searchForm!: FormGroup;
@@ -23,11 +23,9 @@ export class AllProfilesComponent implements OnInit {
     private accountsService: AccountsService,
   ) { }
 
-
-  ngOnInit(): void {
-    this.createForm();
-    // page num, page size
-    this.accountsService.getAllAccounts(0, 5).subscribe(
+  
+  ngOnInit(): void {    
+    this.accountsService.getFollowRequests().subscribe(
       res=>
       {
         this.profiles = res.body.content as Account[];
@@ -40,26 +38,24 @@ export class AllProfilesComponent implements OnInit {
     this.router.navigate(['/profile/' + uuid]);
   }
 
-  createForm() : void{
-    this.searchForm = this.fb.group({
-      name: ['']
-    });
-  }
-  search(): void {
-    if(this.searchForm.value.name != "") {
-      this.accountsService.searchAccounts(this.searchForm.value.name,0, 5).subscribe(
-        res=>{
-          this.profiles = res.body.content as Account[];
-        }
-      )
-    }
-  }
-  refresh(): void {
-    this.accountsService.getAllAccounts(0, 5).subscribe(
-      res=>
-      {
-        this.profiles = res.body.content as Account[];
+  accept(uuid: any): void {
+    this.accountsService.approveFollowRequest(uuid).subscribe(
+      res=>{
+        this.toastr.success("Follow request approved");
+        window.location.reload();
       }
     )
   }
-}
+
+  decline(uuid: any): void {
+    this.accountsService.declineFollowRequest(uuid).subscribe(
+      res=>{
+        this.toastr.success("Follow request declined")
+      }
+    )
+  }
+
+  }
+  
+
+
