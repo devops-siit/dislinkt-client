@@ -27,7 +27,12 @@ export class AccountsService {
                 .append('size', String(size))
                 .append('pattern', ''),
         };
-        return this.http.get(`${environment.accountUrl}/search?pattern=`,
+        return this.http.get(`${environment.accountUrl}/search`,
+          queryParams).pipe(map(res => res));
+    }
+    
+    getAccountByUuid(uuid: any):Observable<any> {
+        return this.http.get(`${environment.accountUrl}/${uuid}`,
           {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
     }
 
@@ -42,7 +47,35 @@ export class AccountsService {
                 .append('pattern', String(pattern)),
         };
         return this.http.get(`${environment.accountUrl}/search`,
-          {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
+        queryParams).pipe(map(res => res));
+    }
+
+    getPublicAccounts(page: number, size: number):Observable<any> {
+        let queryParams = {};
+        queryParams = {
+        headers: this.headers,
+            observe: 'response',
+            params: new HttpParams()
+                .set('page', String(page))
+                .append('size', String(size))
+                .append('pattern', ''),
+        };
+        return this.http.get(`${environment.accountUrl}/public-search`,
+          queryParams).pipe(map(res => res));
+    }
+
+    searchPublicAccounts(pattern: any, page: number, size: number):Observable<any> {
+        let queryParams = {};
+        queryParams = {
+        headers: this.headers,
+            observe: 'response',
+            params: new HttpParams()
+                .set('page', String(page))
+                .append('size', String(size))
+                .append('pattern', String(pattern)),
+        };
+        return this.http.get(`${environment.accountUrl}/public-search`,
+        queryParams).pipe(map(res => res));
     }
 
     editAccount(data: any):Observable<any> {
@@ -86,6 +119,7 @@ export class AccountsService {
 
     //localhost:8087/accounts/education
     insertEducation(education: any): Observable<any>{
+        console.log(education)
         return this.http.post(`${environment.accountUrl}/education`, education,
          {headers: this.headers, responseType: 'json'});
     }
@@ -105,5 +139,28 @@ export class AccountsService {
          {headers: this.headers, responseType: 'json'});
     }
 
+
+    blockAccount(uuid: any): Observable<any> {
+        return this.http.patch(`${environment.accountUrl}/${uuid}/block`,
+         {headers: this.headers, responseType: 'json'});
+    }
    
+    unblockAccount(uuid: any): Observable<any> {
+        return this.http.patch(`${environment.accountUrl}/${uuid}/unblock`,
+         {headers: this.headers, responseType: 'json'});
+    }
+
+    getBlockedAccounts(): Observable<any> {
+        return this.http.get(`${environment.accountUrl}/blocking`,
+         {headers: this.headers, responseType: 'json'}).pipe(map(res => res));
+    }
+
+    followAccount(uuid: any): Observable<any> {
+        return this.http.patch(`${environment.follows}/follow/${uuid}`,
+         {headers: this.headers, responseType: 'json'});
+    }
+    unFollowAccount(uuid: any): Observable<any> {
+        return this.http.patch(`${environment.follows}/unfollow/${uuid}`,
+         {headers: this.headers, responseType: 'json'});
+    }
 }

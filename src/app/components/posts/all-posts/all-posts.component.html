@@ -1,0 +1,24 @@
+<br>
+<br><br>
+    <ul>
+        <li *ngFor="let p of posts">
+          <header>
+            <h1>{{user?.username}}</h1>
+
+            <button (click)="like(p.uuid)" mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+              <mat-icon>thumb_up_alt</mat-icon>{{p.likesCount}}
+            </button>
+            <button (click)="dislike(p.uuid)" mat-icon-button color="warn" aria-label="Example icon button with a home icon">
+              <mat-icon>thumb_down_alt</mat-icon>{{p.dislikesCount}}
+            </button>
+            <button style="margin-left: 50px;" (click)="readMore(p.uuid)" mat-icon-button aria-label="Example icon button with a home icon">
+              <mat-icon>insert_comment</mat-icon>Read more...
+            </button>
+
+            <img class="image" mat-card-image src="https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg" alt="photo">
+          </header>
+          <p>{{p?.text}}</p>
+          
+          
+        </li>
+      </ul>

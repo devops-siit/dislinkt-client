@@ -1,7 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { Account } from 'src/app/model/Account';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 import { NewEducationComponent } from '../new-education/new-education.component';
 import { NewWorkExperienceComponent } from '../new-work-experience/new-work-experience.component';
@@ -14,20 +18,48 @@ import { NewWorkExperienceComponent } from '../new-work-experience/new-work-expe
 export class EditProfileComponent implements OnInit {
 
   profileForm!: FormGroup;
+  currentUser: any = {"uuid": "", "username": ""};
   todayDate!: Date;
-  educations = [{"id": 1, "education": "gimnazija"}, {"id": 2, "education": "FTN"}];
-  experiences = [{"id": 1, "experience": "web design"}, {"id": 2, "experience": "software developer"}];
-  result: any
+  result: any;
+  account: Account = {};
+  pipe = new DatePipe('en-US');
 
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
     private toastr: ToastrService,
+    private accountService: AccountsService,
+    private authService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
     this.todayDate = new Date();
     this.createForm();
+    this.authService.validateToken().subscribe(
+      res=>{
+        this.currentUser = res.body;
+        this.accountService.getAccountByUuid(this.currentUser.uuid).subscribe(
+          res=>{
+            this.account = res as Account;
+            console.log(res)
+            this.profileForm = this.fb.group({
+              name: [this.account.name],
+              username: [this.account.username],
+              email:[this.account.email],
+              phone:[this.account.phone],
+              birthDate: [this.account.dateOfBirth],
+              bio: [this.account.biography],
+              gender: [this.account.gender],
+              public: [this.account.isPublic],
+              
+               });
+    
+            this.profileForm.patchValue(this.account);
+          }
+        )
+      }
+    )
+    
   }
 
   createForm() : void{
@@ -45,10 +77,27 @@ export class EditProfileComponent implements OnInit {
   }
 
   saveProfileData(): void {
-  
+   
+   let request = {
+    "name": this.profileForm.value.name,
+    "email": this.profileForm.value.email,
+    "gender": this.profileForm.value.gender,
+    "biography": this.profileForm.value.bio,
+    "dateOfBirth": String(this.pipe.transform(this.profileForm.value.birthDate, 'yyyy-MM-dd HH:mm')),
+    "isPublic": this.profileForm.value.public
+   }
+    this.accountService.editAccount(request).subscribe(
+      res=>{
+        this.toastr.success("Successfully edited account");
+        window.location.reload();
+      }, error=>{
+        this.toastr.error("Error :(");
+      }
+    )
+
   }
 
-  removeEducation(id:any):void{
+  removeEducation(uuid:any):void{
     const message = `Are you sure you want to remove education?`
     const dialogData = new ConfirmDialogModel('Confirm Action', message);
     const dialogRef = this.dialog.open(ConfirmationComponent, {
@@ -59,27 +108,28 @@ export class EditProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
         if (this.result === true){
-          // this.profileService.deleteEducation(id).subscribe(
-          //   result => {
-          //     this.toastr.success('Experience successfully removed.');
-          //     window.location.reload();
-          //   }, error => {
-          //     this.toastr.error('Cannot remove experience');
-      
-          //   }
-          // );
-
-          }
+          this.accountService.deleteEducation(uuid).subscribe(
+            res=>{
+              this.toastr.success('Experience successfully removed.');
+              window.location.reload();
+            },error=>{
+              this.toastr.error('Cannot remove experience');
+            });
+        }
       })
   }
   addEducation():void {
     const dialogRef = this.dialog.open(NewEducationComponent);
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+      this.result = result;
+        if (this.result === true){
+          
+          window.location.reload();
+        }
+      });
   }
 
-  removeWorkExperience(id:any):void{
+  removeWorkExperience(uuid:any):void{
     const message = `Are you sure you want to remove work experience?`
     const dialogData = new ConfirmDialogModel('Confirm Action', message);
     const dialogRef = this.dialog.open(ConfirmationComponent, {
@@ -90,23 +140,25 @@ export class EditProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
         if (this.result === true){
-          // this.profileService.deleteExperience(id).subscribe(
-          //   result => {
-          //     this.toastr.success('Experience successfully removed.');
-          //     window.location.reload();
-          //   }, error => {
-          //     this.toastr.error('Cannot remove experience');
-      
-          //   }
-          // );
+          this.accountService.deleteWork(uuid).subscribe(
+            res=>{
+              this.toastr.success('Experience successfully removed.');
+              window.location.reload();
+            }, error=>{
+                this.toastr.error('Cannot remove experience');
 
+            });
           }
       })
   }
   addWorkExperience():void {
     const dialogRef = this.dialog.open(NewWorkExperienceComponent);
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      this.result = result;
+        if (this.result === true){
+          
+          window.location.reload();
+        }
     });
   }
 

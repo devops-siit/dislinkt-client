@@ -1,6 +1,6 @@
 <br>    <br>    <br>    <br>
 
 <div *ngFor="let c of chats" style="margin-bottom: 10px; display: flex; justify-content: center;"> 
-    <button mat-raised-button color="primary" style="width: 500px;" (click)="openChat(c.id)">{{c.user}}</button>
+    <button mat-raised-button color="primary" style="width: 500px;" (click)="openChat(c.uuid, c.account?.username, c.account?.uuid)">{{c.account?.username}}</button>
 
 </div>

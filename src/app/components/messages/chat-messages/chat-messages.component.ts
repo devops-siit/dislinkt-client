@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Message } from 'src/app/model/Message';
+import { ChatService } from 'src/app/services/chat/chat.service';
 
 @Component({
   selector: 'app-chat-messages',
@@ -10,37 +12,57 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ChatMessagesComponent implements OnInit {
 
-  id: any = "";
+  uuid: any = "";
   user: any = {};
   result: any;
   messageForm!: FormGroup;
-  withUser = "Senorita"
-  messages = [{"id":1, "sender":"Senorita", "text": "Da li se vidimo veceras?"},
-  {"id":2, "sender":"Stoja", "text": "Da draga stizem"},
-  {"id":3, "sender":"Stoja", "text": "Mozes li 5 min ranije?"}]
+  withUser: any = "";
+  withUserUuid: any = "";
+  messages: Message[] = [];
 
   constructor( 
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
     private fb: FormBuilder,
+    private chatService: ChatService,
   ) { 
     this.createForm();
   }
 
   ngOnInit(): void {
 
-    this.id = this.route.snapshot.params.id;
+    // chat uuid
+    this.uuid = this.route.snapshot.params.uuid;
+    this.withUser = this.route.snapshot.params.username;
+    this.withUserUuid = this.route.snapshot.params.userUuid;
+    this.chatService.getMessagesByChat(this.uuid).subscribe(
+      res=>{
+        this.messages = res.content as Message[];
+
+      }, error=>{
+        
+      }
+    )
     
   }
   sendMessage(): void{
     if (this.messageForm.value['message'] === ""){
       return
     }
-    let newMessage = {"id": 4, "sender": "Stoja", "text": ""};
+    let newMessage = {"accountUuid": this.withUserUuid,  "text": ""};
     newMessage.text = this.messageForm.value['message'];
-    this.messages.push(newMessage);
-    this.messageForm.controls['message'].setValue("");
+    console.log(newMessage)
+    this.chatService.insertMessage(newMessage, this.uuid).subscribe(
+      res=>{
+          //reload
+          window.location.reload();
+      },error =>{
+        console.log("ERROR message not sent")
+      }
+
+    )
+    
   }
   createForm() : void{
     this.messageForm = this.fb.group({

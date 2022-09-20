@@ -6,7 +6,7 @@
     </div>
     
     <ul class="messages">    
-        <li *ngFor="let m of messages" [ngClass]="(withUser === m.sender)?'message left appeared':'message right appeared'">
+        <li *ngFor="let m of messages" [ngClass]="(withUser === m.from)?'message left appeared':'message right appeared'">
                     <div class="avatar">
                                 
                     </div>

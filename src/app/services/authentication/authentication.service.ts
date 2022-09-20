@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 import { User } from '../../model/User';
 import { environment } from 'src/environments/environment';
+import { query } from '@angular/animations';
 
 @Injectable({
     providedIn: 'root'
@@ -23,6 +24,7 @@ export class AuthenticationService {
         if (!localStorage.getItem('user')) {
                 return false;
         }
+        console.log("tu je")
         return true;
     }
 
@@ -36,9 +38,8 @@ export class AuthenticationService {
     }
 
 
-    signOut(): Observable<any> {
-        return this.http.get(`${environment.authUrl}/${environment.signOut}`, {headers: this.headers});
-
+    signOut(): void {
+        localStorage.removeItem('user');
     }
 
     changePassword(passwordData: any): Observable<any> {
@@ -52,5 +53,26 @@ export class AuthenticationService {
 			lastName: data.lastName, username: data.email, password: data.password}, {headers: this.headers, responseType: 'json'});
 	
 	}
+    validateToken(): Observable<any>{
+        const item = localStorage.getItem('user'); // || "{}";
+
+        if (item) {
+            const decodedItem = JSON.parse(item);
+            let queryParams = {};
+                queryParams = {
+                headers: this.headers,
+                observe: 'response',
+                params: new HttpParams()
+                    .set('token', String(decodedItem.token)),
+                
+        };
+        return this.http.get(`${environment.authUrl}/validate-token`, queryParams).pipe(map(res => res));
+          
+    }
+    else {
+        throw console.error();
+        
+    }
+}
 
 }

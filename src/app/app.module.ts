@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import { OffersModule } from './components/offers/offers.module';
+import { PostsModule } from './components/posts/posts-module';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { OffersModule } from './components/offers/offers.module';
     ProfilesModule,
     MessagesModule,
     CommentsModule,
+    PostsModule,
     SharedModule,
     OffersModule,
     BrowserModule,

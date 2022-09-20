@@ -6,6 +6,15 @@ import { MatDialog } from '@angular/material/dialog';
 
 
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
+import { Account } from 'src/app/model/Account';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { PostService } from 'src/app/services/post/post.service';
+import { ToastrService } from 'ngx-toastr';
+import { Comment } from 'src/app/model/Comment';
+import { Post } from 'src/app/model/Post';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
+import { ChatService } from 'src/app/services/chat/chat.service';
+import { Chat } from 'src/app/model/Chat';
 
 @Component({
   selector: 'app-one-profile',
@@ -15,27 +24,67 @@ import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirma
 export class OneProfileComponent implements OnInit {
 
   commentForm!: FormGroup;
-  id: any = "";
-  user: any = {};
-  posts: any = [];
-  following = true;
-  privateAccount = true;
+  uuid: any = "";
+  user?: Account;
+  posts: Post[] = [];
+  following = false;
+  sendRequest = true;
+  requestSent = false;
+  privateAccount = false;
   result: any;
+  currentUser?: Account;
+  myChats: Chat[] = [];
+  myFollowing: Account[] = [];
 
   constructor( 
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
     public dialog: MatDialog,
+    private accountService: AccountsService,
+    private postService: PostService,
+    private toastr: ToastrService,
+    private authService: AuthenticationService,
+    private chatService: ChatService,
   ) { }
 
   ngOnInit(): void {
     this.createForm();
-    this.id = this.route.snapshot.params.id;
-    // TO DO dobavi usera, dobavi njegove postove
-    this.user = {"id": this.id, "username": "senorita"};
+    this.uuid = this.route.snapshot.params.uuid;
 
-    this.posts = [{"id":1,"text": "post1", "showComments": false, "likes":35, "dislikes":5, "comments": [{"username": "Stoja", "text": "VRHH"}]}, {"id":2,"text": "post2",  "showComments": false, "comments": []}];
+    this.authService.validateToken().subscribe(
+      res=>{
+        this.currentUser = res.body as Account;
+        this.accountService.getFollowing(this.currentUser?.uuid).subscribe(
+          res=>{
+            this.myFollowing = res.content as Account[];
+            for(var acc of this.myFollowing){
+              if(acc.uuid == this.uuid){
+                this.following = true; // pratimo se
+                if(!acc.isPublic){
+                  this.privateAccount = true;
+                  console.log(this.privateAccount)
+                }
+              }
+            }
+          }
+        )
+      }
+    )
+    
+    this.accountService.getAccountByUuid(this.uuid).subscribe(
+      res=>{
+        this.user = res as Account;
+        this.privateAccount = this.user.isPublic? false:true;
+      }
+    );
+    
+
+    this.postService.getPostsByAccount(this.uuid, 0, 5).subscribe(
+      res=>{
+        this.posts = res.content as Post[];
+      }
+    )
   }
 
   createForm(): void {
@@ -44,17 +93,25 @@ export class OneProfileComponent implements OnInit {
     });
   }
 
-  sendComment(id: any): void {
-    const dialogRef = this.dialog.open(NewCommentComponent);
-    dialogRef.componentInstance.postId = id;
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-
-  }
 
   follow(): void {
-
+    if (this.privateAccount) {
+      this.accountService.sendFollowRequest(this.uuid).subscribe(
+        res=>{
+            this.toastr.success("Follow send");
+      }, error=>{
+        this.toastr.error("Follow not send");
+      })
+    }
+    else{
+      this.accountService.followAccount(this.uuid).subscribe(
+        res=>{
+          this.following = true;
+          this.toastr.success("You're now following "+ this.user?.username);
+        }
+      )
+    }
+    
   }
   unfollow(): void{
     if (this.privateAccount) {
@@ -67,43 +124,58 @@ export class OneProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
         if (this.result === true){
-          // this.profileService.unfollowkAccount(this.user.id).subscribe(
-          //   result => {
-          //     this.toastr.success('User unfollowed');
-          //     window.location.reload();
-          //   }, error => {
-          //     this.toastr.error('Cannot unfollow user');
-      
-          //   }
-          // );
 
-          }
+          this.accountService.unFollowAccount(this.uuid).subscribe(
+            res=>{
+              this.following = false;
+              this.toastr.success('User unfollowed');
+            }
+          )
+        }
       })
     }
+    // nije privatan
     else {
-      // unfollow user
-      // this.profileService.unfollowkAccount(this.user.id).subscribe(
-          //   result => {
-          //     this.toastr.success('User unfollowed');
-          //     window.location.reload();
-          //   }, error => {
-          //     this.toastr.error('Cannot unfollow user');
-      
-          //   }
-          // );
+      this.accountService.unFollowAccount(this.uuid).subscribe(
+        res=>{
+          this.following = false;
+          this.toastr.success('User unfollowed');
+        }
+      )
     }
   }
   message(): void {
-    this.router.navigate(['/chat-messages/' + this.id]);
+    // proveri prvo dal postoji chat taj chat
+    let existing = false;
+    let chatUuid ;
+    this.chatService.getChatsByAccount().subscribe(
+      res=>{
+        this.myChats = res as Chat[];
+        for(var chat of this.myChats){
+          if(chat.account?.uuid == this.uuid){
+            existing = true; // postoji chat
+            chatUuid = chat.uuid;
+          }
+        }
+      }
+    );
+    if (existing) {
+      this.router.navigate(['/chat-messages/' + chatUuid+'/'+this.user?.username + '/'+this.uuid]);
+    }
+    else {
+      this.chatService.insertChat(this.uuid).subscribe(
+        res=>{
+          let newChat = res as Chat;
+          this.router.navigate(['/chat-messages/' + newChat.uuid +'/'+this.user?.username + '/'+ this.uuid]);
+        }
+      )
+    }
+    
   }
-
-  showComments(post: any): void {
-    post.showComments = true
+  readMore(postUuid: any): void {
+    this.router.navigate(['/one-post/' + postUuid]);
   }
-  
-  hideComments(post: any): void{
-    post.showComments = false
-  }
+ 
   block():void{
     const message = `Are you sure you want to block user?`
     const dialogData = new ConfirmDialogModel('Confirm Action', message);
@@ -115,23 +187,26 @@ export class OneProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
         if (this.result === true){
-          // this.profileService.blockAccount(this.user.id).subscribe(
-          //   result => {
-          //     this.toastr.success('User blocked');
-          //     window.location.reload();
-          //   }, error => {
-          //     this.toastr.error('Cannot block user');
-      
-          //   }
-          // );
-
-          }
+          this.accountService.blockAccount(this.uuid).subscribe(
+            res=>{
+              this.toastr.success('User blocked');
+               window.location.reload();
+            }
+          )}
       })
   }
-  like(id: any): void{
-
+  like(uuid: any): void{
+    this.postService.likePost(uuid).subscribe(
+      res=> {
+        window.location.reload();
+      }
+    )
   }
-  dislike(id: any): void {
-
+  dislike(uuid: any): void {
+    this.postService.dislikePost(uuid).subscribe(
+      res=>{
+        window.location.reload();
+      }
+    )
   }
 }

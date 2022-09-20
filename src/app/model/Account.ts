@@ -1,7 +1,7 @@
 import { Education } from "./Education";
 import { Work } from "./Work";
 
-export class Account{
+export interface Account{
 
   uuid?: string;
   username?: string;

@@ -28,10 +28,8 @@
             <th>Username</th>
             <th>
                 <mat-form-field appearance="fill">
-                    <input matInput formControlName="username" required>
-                    <mat-error *ngIf="profileForm.controls.username.touched && profileForm.controls.username.invalid">
-                        <span *ngIf="profileForm.controls.username.errors?.required">This field is mandatory.</span>
-                    </mat-error>
+                    <input matInput formControlName="username" readonly>
+                    
                 </mat-form-field>
             </th>
             <th></th>
@@ -132,11 +130,11 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let edu of educations">
-            <td>{{edu.education}}</td>
+        <tr *ngFor="let edu of account.education">
+            <td>{{edu.name}}</td>
             <td></td>
             <td >
-                <button mat-raised-button (click)="removeEducation(edu.id)" >
+                <button mat-raised-button (click)="removeEducation(edu.uuid)" >
                     <mat-icon aria-hidden="false" aria-label="Example home icon">clear</mat-icon>
                 </button>
             </td>
@@ -164,11 +162,11 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let exp of experiences">
-            <td>{{exp.experience}}</td>
+        <tr *ngFor="let exp of account.workExperience">
+            <td>{{exp.position}}</td>
             <td></td>
             <td >
-                <button mat-raised-button (click)="removeWorkExperience(exp.id)" >
+                <button mat-raised-button (click)="removeWorkExperience(exp.uuid)" >
                     <mat-icon aria-hidden="false" aria-label="Example home icon">clear</mat-icon>
                 </button>
             </td>

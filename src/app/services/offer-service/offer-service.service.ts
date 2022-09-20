@@ -9,7 +9,7 @@ import { Page } from 'src/app/model/Page';
 })
 export class OfferService {
 
-  private readonly path = 'http://localhost:8083/offers';
+  private readonly path = 'http://localhost:8087/offers';
   pageSize :number = 0;
 
 

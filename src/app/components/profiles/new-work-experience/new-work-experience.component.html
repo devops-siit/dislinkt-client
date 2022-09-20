@@ -3,12 +3,49 @@
     <h2 mat-dialog-title>New work experience</h2>
     <br>
     <mat-form-field appearance="fill">
-        <mat-label>Experience</mat-label>
-        <input id="experience" matInput formControlName="experience">
-        <mat-error *ngIf="expForm.controls.experience.touched && expForm.controls.experience.invalid">
-            <span *ngIf="expForm.controls.experience.errors?.required">This field is mandatory.</span>
+        <mat-label>Position</mat-label>
+        <input id="experience" matInput formControlName="position">
+        <mat-error *ngIf="expForm.controls.position.touched && expForm.controls.position.invalid">
+            <span *ngIf="expForm.controls.position.errors?.required">This field is mandatory.</span>
         </mat-error>
     </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Company Name</mat-label>
+        <input  matInput formControlName="companyName">
+        <mat-error *ngIf="expForm.controls.companyName.touched && expForm.controls.companyName.invalid">
+            <span *ngIf="expForm.controls.companyName.errors?.required">This field is mandatory.</span>
+        </mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <input  matInput formControlName="description">
+        <mat-error *ngIf="expForm.controls.description.touched && expForm.controls.description.invalid">
+            <span *ngIf="expForm.controls.description.errors?.required">This field is mandatory.</span>
+        </mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Start date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="startDate" [max]="todayDate" required>
+        <mat-datepicker-toggle matSuffix [for]="picker" id="datePickerToggleBtn" ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="expForm.controls.startDate.touched && expForm.controls.startDate.invalid">
+            <span *ngIf="expForm.controls.startDate.errors?.required">This field is mandatory.</span>
+        </mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>End date</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="endDate" [max]="todayDate" required>
+        <mat-datepicker-toggle matSuffix [for]="picker1" id="datePickerToggleBtn" ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+        <mat-error *ngIf="expForm.controls.endDate.touched && expForm.controls.endDate.invalid">
+            <span *ngIf="expForm.controls.endDate.errors?.required">This field is mandatory.</span>
+        </mat-error>
+    </mat-form-field>
+    <br>
     <mat-dialog-actions align="end">
         <button mat-raised-button mat-dialog-close>Cancel</button>
         <button id="expSubmit" type="submit" mat-raised-button color="success">Save</button>

@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Account } from 'src/app/model/Account';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirmation/confirmation.component';
 
 @Component({
@@ -13,25 +15,26 @@ import { ConfirmationComponent, ConfirmDialogModel } from '../../shared/confirma
 export class BlockedAccountsComponent implements OnInit {
 
 
-  profiles = [{"id": 9, "name": "Marija Mikic", "username": "mara", "private": false}, 
-  {"id":8, "name": "Marija Petrovic","username": "mara2", "private": false}, 
-  {"id": 7, "name": "Marija Petrovic","username": "mara3", "private": false},
-  {"id": 6, "name": "Marija  Peric", "username": "mara3", "private": false}]
+  profiles: Account[] = [];
   result: any;
 
   constructor(
     
     public dialog: MatDialog,
+    private accountService: AccountsService,
   ) { }
 
   ngOnInit(): void {
+    this.accountService.getBlockedAccounts().subscribe(
+      res=>{
+        this.profiles = res as Account[];
+      }
+    )
   }
 
- 
 
- 
 
-  unblock(): void {
+  unblock(uuid: any): void {
     const message = `Are you sure you want to unblock the user?`
     const dialogData = new ConfirmDialogModel('Confirm Action', message);
     const dialogRef = this.dialog.open(ConfirmationComponent, {
@@ -39,8 +42,17 @@ export class BlockedAccountsComponent implements OnInit {
         data: dialogData
     });
 
-    //TODO: pozovi servis metodu
-   
-  }
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+        if (this.result === true){
+          this.accountService.unblockAccount(uuid).subscribe(
+            res=> {
+              window.location.reload();
+            }
+          )
+          
+          }
+      })
+    }
 
 }
