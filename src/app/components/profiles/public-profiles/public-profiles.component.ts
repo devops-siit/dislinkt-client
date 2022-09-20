@@ -26,7 +26,7 @@ export class PublicProfilesComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     // page num, page size
-    this.accountsService.getAllAccounts(0, 5).subscribe(
+    this.accountsService.getPublicAccounts(0, 10).subscribe(
       res=>
       {
         this.profiles = res.body.content as Account[];
@@ -46,7 +46,7 @@ export class PublicProfilesComponent implements OnInit {
   }
   search(): void {
     if(this.searchForm.value.name != "") {
-      this.accountsService.searchAccounts(this.searchForm.value.name,0, 5).subscribe(
+      this.accountsService.searchPublicAccounts(this.searchForm.value.name,0, 10).subscribe(
         res=>{
           this.profiles = res.body.content as Account[];
         }
@@ -54,7 +54,7 @@ export class PublicProfilesComponent implements OnInit {
     }
   }
   refresh(): void {
-    this.accountsService.getAllAccounts(0, 5).subscribe(
+    this.accountsService.getPublicAccounts(0, 5).subscribe(
       res=>
       {
         this.profiles = res.body.content as Account[];

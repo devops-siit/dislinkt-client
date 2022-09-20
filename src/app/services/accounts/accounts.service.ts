@@ -50,6 +50,34 @@ export class AccountsService {
         queryParams).pipe(map(res => res));
     }
 
+    getPublicAccounts(page: number, size: number):Observable<any> {
+        let queryParams = {};
+        queryParams = {
+        headers: this.headers,
+            observe: 'response',
+            params: new HttpParams()
+                .set('page', String(page))
+                .append('size', String(size))
+                .append('pattern', ''),
+        };
+        return this.http.get(`${environment.accountUrl}/public-search`,
+          queryParams).pipe(map(res => res));
+    }
+
+    searchPublicAccounts(pattern: any, page: number, size: number):Observable<any> {
+        let queryParams = {};
+        queryParams = {
+        headers: this.headers,
+            observe: 'response',
+            params: new HttpParams()
+                .set('page', String(page))
+                .append('size', String(size))
+                .append('pattern', String(pattern)),
+        };
+        return this.http.get(`${environment.accountUrl}/public-search`,
+        queryParams).pipe(map(res => res));
+    }
+
     editAccount(data: any):Observable<any> {
         return this.http.put(`${environment.accountUrl}`, data,
           {headers: this.headers, responseType: 'json'});
